@@ -1,67 +1,60 @@
 from datetime import datetime
-from tokenize import group
+from unicodedata import name
+from flask_login import UserMixin
+from sqlalchemy.sql import func
+from . import db
 
-groups = []
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(150), unique=True)
+    password = db.Column(db.String(150))
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 
-class User():
-    def __init__(self, username):
-        # TODO get an auto-generated userID from database
-        self.username = username
+class Group(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    admin_id = db.Column(db.Integer, nullable=False)
+    group_name = db.Column(db.String(30), nullable=False)
 
-    def join_group(self, group):
-        # TODO make the member_id auto-increment
-        new_dict = {6: self.user_name}
-        group.member_ids.update(new_dict)
-
-class Group():
-    def __init__(self, member_ids, group_name, admin_id):
-        self.member_ids = member_ids
-        self.group_name = group_name
-        self.admin_id = admin_id
-        self.transactions = []
-        self.payments = []
-        groups.append(self)
-        self.id = groups[-1]
-
-    def add_transaction(self, payer_id, amount, description, transaction_creator):
+    def add_transaction(group_id, payer_id, amount, description, transaction_creator):
 
         transaction = {"date": datetime.now(), "payer_id": payer_id, "amount": amount, \
             "description": description, "transaction_creator": transaction_creator}
-        self.transactions.append(transaction)
+        group_id.transactions.append(transaction)
 
-    def add_payment(self, payer_id, recipient_id, amount):
+    def add_payment(group_id, payer_id, recipient_id, amount):
 
         payment = {"date": datetime.now(), "payer_id": payer_id, "amount": amount, \
-         "recipient_id": recipient_id}
-        self.payments.append(payment)
+            "recipient_id": recipient_id}
+        group_id.payments.append(payment)
 
-    def announce_group(self):
-        return (f" {self.group_name} has {len(self.member_ids)} members and the admin is {self.member_ids[str(self.admin_id)]}.")+\
-        (f" Members: {self.member_ids} ")+ str(groups)
+    def announce_group(group_id):
+        return (f" {group_id.group_name} has {len(group_id.member_ids)} members and the admin is {group_id.member_ids[str(group_id.admin_id)]}.")+\
+        (f" Members: {group_id.member_ids} ")
 
-    def show_balance(self):
+    def show_balance(group_id):
         balance = 0
-        for transaction in self.transactions:
+        for transaction in group_id.transactions:
             balance += transaction['amount']
-        print(f"{self.group_name} has a total balance of ${balance}.")
+        print(f"{group_id.group_name} has a total balance of ${balance}.")
 
-    def show_transactions(self):
-        for transaction in self.transactions:
+    def show_transactions(group_id):
+        for transaction in group_id.transactions:
             print(transaction)
 
-    def calculate_debts(self, member_id):
+    def calculate_debts(group_id, member_id):
         
         total_paid = 0
         total_borrowed = 0
 
-        for transaction in self.transactions:
+        for transaction in group_id.transactions:
             # if the member paid for the transaction, add to member's paid amount
             if transaction['payer_id'] == member_id:
                 total_paid += transaction['amount']
             # add the amount to the member's borrowed amount
-            total_borrowed += (transaction['amount'] / len(self.member_ids))
+            total_borrowed += (transaction['amount'] / len(group_id.member_ids))
 
-        for payment in self.payments:
+        for payment in group_id.payments:
             # if the member made a payment to another member, add to member's paid amount
             if payment['payer_id'] == member_id:
                 total_paid += payment['amount']
@@ -75,12 +68,19 @@ class Group():
 
         if owed_to_group > 0:
             owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{self.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They owe {owed_to_group}.")
+            return (f"{group_id.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They owe {owed_to_group}.")
         elif owed_to_group == 0:
             owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{self.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They are all settled up!")
+            return (f"{group_id.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They are all settled up!")
         elif owed_to_group < 0:
             owed_to_group = owed_to_group * -1
             owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{self.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They are owed {owed_to_group}.")
+            return (f"{group_id.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They are owed {owed_to_group}.")
+
+class Transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    payer_id = db.Column(db.Integer, nullable=False)
+    creator_id = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    description = db.Column(db.String(300), nullable=False)
 

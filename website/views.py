@@ -1,35 +1,33 @@
-from flask import Blueprint, request
-from .models import Group, User, groups
+from sre_constants import SUCCESS
+from flask import Blueprint, request, render_template, flash
+from .models import Group, User
+from flask_login import login_required, current_user
+from . import db
 
 views = Blueprint('views', __name__)
 
-
 @views.route('/', methods=['GET', 'POST'])
+@login_required
 def home():
 
-    return "Welcome to marmo."
+    return render_template("home.html", user=current_user)
 
-@views.route('/create-group', methods=["POST"])
+@views.route('/create-group', methods=["GET", "POST"])
+@login_required
 def create_group():
-    # TODO add validation
-    json = request.json
-    admin_id = json["admin_id"]
-    group_name = json["group_name"]
-    member_ids = json["member_ids"]
+    if request.method == "POST":
+        # TODO add validation
+        json = request.json
+        admin_id = current_user.id
+        group_name = request.form.get('group_name')
+        #member_ids = request.form.get('member_ids')
 
-    new_group = Group(admin_id=admin_id, group_name=group_name, member_ids=member_ids)
+        new_group = Group(admin_id=admin_id, group_name=group_name)
+        db.session.add(new_group)
+        db.session.commit()
+        flash(f"Group {new_group.group_name} successfully created!", category=SUCCESS)
     
-    return ("Group successfully created!"+\
-        new_group.announce_group())
-
-@views.route('create-user', methods=["POST"])
-def create_user():
-    # TODO add validation
-    json = request.json
-    username = json["username"]
-
-    new_user = User(username=username)
-    return f"New user successfully created with username: {new_user.username}."
+    return render_template("create_group.html", user=current_user)
 
 @views.route('add-transaction', methods=["POST"])
 def add_transaction():
@@ -53,3 +51,19 @@ def calculate_debts():
     member_id = json["member_id"]
     
     return groups[group_id].calculate_debts(member_id)
+
+@views.route('search-users', methods=["GET"])
+def search_user():
+    json = request.json
+    users = []
+    result = str(User.query.all())
+
+    #for user in result:
+        #user_dict = {}
+       # user_dict["id"] = user.id
+        #user_dict["username"] = user.username
+       # user_dict["email"] = user.email
+       # user_dict["date_created"] = user.date_created
+       # users.append(user_dict)
+
+    return result.id
