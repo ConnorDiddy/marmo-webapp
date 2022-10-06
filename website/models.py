@@ -1,9 +1,12 @@
 from datetime import datetime
-    
+from tokenize import group
+
+groups = []
+
 class User():
-    def __init__(self, user_name):
+    def __init__(self, username):
         # TODO get an auto-generated userID from database
-        self.user_name = user_name
+        self.username = username
 
     def join_group(self, group):
         # TODO make the member_id auto-increment
@@ -17,6 +20,8 @@ class Group():
         self.admin_id = admin_id
         self.transactions = []
         self.payments = []
+        groups.append(self)
+        self.id = groups[-1]
 
     def add_transaction(self, payer_id, amount, description, transaction_creator):
 
@@ -31,8 +36,8 @@ class Group():
         self.payments.append(payment)
 
     def announce_group(self):
-        return (f"{self.group_name} has {len(self.member_ids)} members and the admin is {self.member_ids[str(self.admin_id)]}.")+\
-        (f"Members: {self.member_ids}")
+        return (f" {self.group_name} has {len(self.member_ids)} members and the admin is {self.member_ids[str(self.admin_id)]}.")+\
+        (f" Members: {self.member_ids} ")+ str(groups)
 
     def show_balance(self):
         balance = 0
