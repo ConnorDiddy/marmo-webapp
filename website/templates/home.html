@@ -1,5 +1,14 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<h1 align="center">Welcome to marmo.</h1>
-<a href="create-group"><button type="button">Create New Group</button></a>
-<a href="join-group"><button type="button">Join Group</button></a>
+<h1 align="center">Welcome to marmo.</h1><br>
+<div class="container" align="center">
+    <a class="btn btn-primary" href="create-group" role="button" align="center">Create Group</a>
+    <a class="btn btn-primary" href="join-group" role="button">Join Group</a><br><br>
+</div>
+<div class="container" align="left" padding="1rem">
+    <h2>My groups:</h2>
+    {% for group in user.groups %}
+    <h5><a href="#">{{ group.group_name }}</h5>
+    {% endfor %}
+</div>
+
 {% endblock %}

@@ -1,7 +1,7 @@
 
 from sre_constants import SUCCESS
 from flask import Blueprint, request, render_template, flash
-from .models import Group, User
+from .models import Group, User, Transaction
 from flask_login import login_required, current_user
 from . import db
 
@@ -20,13 +20,14 @@ def create_group():
         # TODO add validation
         admin_id = current_user.id
         group_name = request.form.get('group_name')
-        #member_ids = request.form.get('member_ids')
 
         new_group = Group(admin_id=admin_id, group_name=group_name)
         current_user.groups.append(new_group)
         db.session.add(new_group)
         db.session.commit()
         flash(f"Group {new_group.group_name} successfully created!", category=SUCCESS)
+
+        return home()
     
     return render_template("create_group.html", user=current_user)
 
@@ -39,7 +40,9 @@ def join_group():
         group = Group.query.filter_by(id=group_id).first()
         current_user.groups.append(group)
         db.session.commit()
-        flash(f"User {current_user.username} successfully joined group {group.group_name}!", category=SUCCESS)
+        flash(f"User {current_user.username} successfully joined {group.group_name}!", category=SUCCESS)
+
+        return home()
 
     return render_template("join_group.html", user=current_user)
 
@@ -48,23 +51,28 @@ def add_transaction():
     json = request.json
 
     group_id = int(json["group_id"])
+    group = Group.query.filter_by(id=group_id).first()
     payer_id = json['payer_id']
     amount = float(json["amount"])
     description = json["description"]
-    transaction_creator = json["transaction_creator"]
+    creator_id = json["creator_id"]
     
-    groups[group_id].add_transaction(payer_id=payer_id, amount=amount, description=description, transaction_creator=transaction_creator)
-
-    return f"Transaction for {amount} was successfully submitted to {groups[group_id].group_name}."
+    new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
+         creator_id=creator_id, group_id=group_id)
+    db.session.add(new_transaction)
+    db.session.commit()
+    return f"Transaction for ${new_transaction.amount} was successfully submitted to {group.group_name}."
 
 @views.route('calculate-debts', methods=["POST"])
 def calculate_debts():
     json = request.json
 
     group_id = int(json["group_id"])
+    group = Group.query.filter_by(id=group_id).first()
     member_id = json["member_id"]
+    member = User.query.filter_by(id=member_id).first()
     
-    return groups[group_id].calculate_debts(member_id)
+    return group.calculate_debts(member)
 
 @views.route('search-users', methods=["GET", "POST"])
 def search_user():
@@ -98,6 +106,7 @@ def search_groups():
         return_dict["admin_id"] = return_group.admin_id
         return_dict["date_created"] = return_group.date_created
         return_dict["members"] = str(return_group.members)
+        return_dict["transactions"] = str(return_group.transactions)
     else:
         all_groups = Group.query.all()
         

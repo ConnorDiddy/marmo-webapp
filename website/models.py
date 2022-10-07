@@ -1,5 +1,4 @@
 from datetime import datetime
-from unicodedata import name
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from . import db
@@ -25,6 +24,8 @@ class Group(db.Model):
     admin_id = db.Column(db.Integer)
     group_name = db.Column(db.String(30), nullable=False)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+    transactions = db.relationship('Transaction')
+    payments = db.relationship('Payment')
 
     def __repr__(self):
         return f'<Group: {self.group_name}>'
@@ -55,25 +56,25 @@ class Group(db.Model):
         for transaction in group_id.transactions:
             print(transaction)
 
-    def calculate_debts(group_id, member_id):
+    def calculate_debts(self, member):
         
         total_paid = 0
         total_borrowed = 0
 
-        for transaction in group_id.transactions:
+        for transaction in self.transactions:
             # if the member paid for the transaction, add to member's paid amount
-            if transaction['payer_id'] == member_id:
-                total_paid += transaction['amount']
+            if transaction.payer_id == member.id:
+                total_paid += transaction.amount
             # add the amount to the member's borrowed amount
-            total_borrowed += (transaction['amount'] / len(group_id.member_ids))
+            total_borrowed += (transaction.amount / len(self.members))
 
-        for payment in group_id.payments:
-            # if the member made a payment to another member, add to member's paid amount
-            if payment['payer_id'] == member_id:
-                total_paid += payment['amount']
-            # if the member received a payment from another member, add to member's borrowed amount
-            if payment['recipient_id'] == member_id:
-                total_borrowed += payment['amount']
+        for payment in self.payments:
+             #if the member made a payment to another member, add to member's paid amount
+            if payment.payer_id == member.id:
+                total_paid += payment.amount
+             #if the member received a payment from another member, add to member's borrowed amount
+            if payment.recipient_id == member.id:
+                total_borrowed += payment.amount
 
         owed_to_group = total_borrowed - total_paid
         total_borrowed = "${:,.2f}".format(total_borrowed)
@@ -81,19 +82,35 @@ class Group(db.Model):
 
         if owed_to_group > 0:
             owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{group_id.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They owe {owed_to_group}.")
+            return (f"{member.username} borrowed {total_borrowed} and paid {total_paid}. They owe {owed_to_group}.")
         elif owed_to_group == 0:
             owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{group_id.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They are all settled up!")
+            return (f"{member.username} borrowed {total_borrowed} and paid {total_paid}. They are all settled up!")
         elif owed_to_group < 0:
             owed_to_group = owed_to_group * -1
             owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{group_id.member_ids[member_id]} borrowed {total_borrowed} and paid {total_paid}. They are owed {owed_to_group}.")
+            return (f"{member.username} borrowed {total_borrowed} and paid {total_paid}. They are owed {owed_to_group}.")
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     payer_id = db.Column(db.Integer, nullable=False)
     creator_id = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(300), nullable=False)
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 
+    def __repr__(self):
+        return f'<Transaction: {self.description}>'
+
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    payer_id = db.Column(db.Integer, nullable=False)
+    recipient_id = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    description = db.Column(db.String(300), nullable=False)
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+
+    def __repr__(self):
+        return f'<Payment: {self.description}>'
