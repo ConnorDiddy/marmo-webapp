@@ -4,17 +4,30 @@ from flask_login import UserMixin
 from sqlalchemy.sql import func
 from . import db
 
+group_member = db.Table('group_member',
+    db.Column('user.id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('group_id', db.Integer, db.ForeignKey('group.id'))
+)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+    groups = db.relationship('Group', secondary=group_member, backref="members")
+
+    def __repr__(self):
+        return f'<User: {self.username}>'
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    admin_id = db.Column(db.Integer, nullable=False)
+    admin_id = db.Column(db.Integer)
     group_name = db.Column(db.String(30), nullable=False)
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+
+    def __repr__(self):
+        return f'<Group: {self.group_name}>'
 
     def add_transaction(group_id, payer_id, amount, description, transaction_creator):
 
