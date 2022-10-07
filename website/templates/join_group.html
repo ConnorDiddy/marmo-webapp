@@ -1,0 +1,8 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<h1 align="center">Join a Group</h1>
+<form method="post" action="http://127.0.0.1:5000/join-group" align="center">
+    <label for="group_id">Group id:</label><br>
+    <input type="text" id="group_id" name="group_id"><br><br>
+    <input type="submit" id="mysubmit">
+</form>
+{% endblock %}
