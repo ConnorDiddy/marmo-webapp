@@ -1,7 +1,7 @@
 
 from sre_constants import SUCCESS
 from flask import Blueprint, request, render_template, flash
-from .models import Group, User, Transaction
+from .models import Group, User, Transaction, Payment
 from flask_login import login_required, current_user
 from . import db
 
@@ -65,6 +65,25 @@ def add_transaction():
 
         return home()
     return render_template('add_transaction.html', user=current_user)
+
+@views.route('add-payment', methods=["GET","POST"])
+@login_required
+def payment():
+    if request.method == "POST":
+        payer_id = request.form.get('payer_id')
+        group_id = request.form.get('group_id')
+        amount = request.form.get('amount')
+        recipient_id = request.form.get('recipient_id')
+        description = request.form.get('description')
+        recipient = User.query.filter_by(id=recipient_id).first()
+
+        new_payment = Payment(payer_id=payer_id, amount=amount, \
+            recipient_id=recipient_id, group_id=group_id, description=description)
+        db.session.add(new_payment)
+        db.session.commit()
+        flash(f"Payment of ${new_payment.amount} to {recipient.username} successfully submitted!", category=SUCCESS)
+        return home()
+    return render_template('add_payment.html', user=current_user)
 
 @views.route('calculate-debts', methods=["POST"])
 def calculate_debts():

@@ -76,20 +76,16 @@ class Group(db.Model):
             if payment.recipient_id == member.id:
                 total_borrowed += payment.amount
 
-        owed_to_group = total_borrowed - total_paid
-        total_borrowed = "${:,.2f}".format(total_borrowed)
-        total_paid = "${:,.2f}".format(total_paid)
-
-        if owed_to_group > 0:
-            owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{member.username} borrowed {total_borrowed} and paid {total_paid}. They owe {owed_to_group}.")
-        elif owed_to_group == 0:
-            owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{member.username} borrowed {total_borrowed} and paid {total_paid}. They are all settled up!")
-        elif owed_to_group < 0:
-            owed_to_group = owed_to_group * -1
-            owed_to_group = "${:,.2f}".format(owed_to_group)
-            return (f"{member.username} borrowed {total_borrowed} and paid {total_paid}. They are owed {owed_to_group}.")
+        overall = total_paid - total_borrowed
+        return_list = [overall]
+        if overall == 0:
+            return_list.append(0)
+        elif overall < 0:
+            return_list.append(-1)
+        elif overall > 0:
+            return_list.append(1)
+        return_list[0] = "{:,.2f}".format(abs(overall))
+        return return_list
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
