@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<div class="container" align="center">
+  <br><h1 align="center">{{ group.group_name }}</h1>
+  <h4>Group id: {{ group.id }}</h4><br>
+  <h4>Members:</h4>
+  {% for member in group.members %}
+  <h5>{{ member.username }}</h5>
+  {% endfor %}<br>
+  <h4>Debts:</h4>
+  {% for member in group.members %}
+  <h6>{{ group.calculate_debts(member) }}</h6>
+  {% endfor %}<br>
+  <a class="btn btn-secondary" href="/" role="button">Back</a>
+  <a class="btn btn-primary" href="/add-transaction" role="button">Add transaction</a>
+</div>
+{% endblock %}
