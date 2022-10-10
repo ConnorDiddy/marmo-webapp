@@ -46,22 +46,25 @@ def join_group():
 
     return render_template("join_group.html", user=current_user)
 
-@views.route('add-transaction', methods=["POST"])
+@views.route('add-transaction', methods=["GET","POST"])
+@login_required
 def add_transaction():
-    json = request.json
+    if request.method == "POST":
+        payer_id = request.form.get('payer_id')
+        amount = request.form.get('amount')
+        description = request.form.get('description')
+        creator_id = current_user.id
+        group_id = request.form.get('group_id')
+        group = Group.query.filter_by(id=group_id).first()
+        
+        new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
+            creator_id=creator_id, group_id=group_id)
+        db.session.add(new_transaction)
+        db.session.commit()
+        flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
 
-    group_id = int(json["group_id"])
-    group = Group.query.filter_by(id=group_id).first()
-    payer_id = json['payer_id']
-    amount = float(json["amount"])
-    description = json["description"]
-    creator_id = json["creator_id"]
-    
-    new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
-         creator_id=creator_id, group_id=group_id)
-    db.session.add(new_transaction)
-    db.session.commit()
-    return f"Transaction for ${new_transaction.amount} was successfully submitted to {group.group_name}."
+        return home()
+    return render_template('add_transaction.html', user=current_user)
 
 @views.route('calculate-debts', methods=["POST"])
 def calculate_debts():
@@ -114,3 +117,13 @@ def search_groups():
             return_dict[group.id] = group.group_name
 
     return return_dict
+
+@views.route('mygroup', methods=["GET", "POST"])
+def show_group():
+    if request.method == "GET":
+        group_id = request.args['groupID']
+        group = Group.query.filter_by(id=group_id).first()
+
+        return render_template("group.html", user=current_user, group=group)
+    else:
+        return "Use a get request"
