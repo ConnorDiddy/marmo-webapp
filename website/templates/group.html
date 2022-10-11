@@ -4,7 +4,11 @@
   <h4>Group id: {{ group.id }}</h4><br>
   <h4>Members:</h4>
   {% for member in group.members %}
-  <h5>{{ member.username }}</h5>
+    {% if member.id == group.admin_id %}
+      <h5>{{ member.username }} (admin)</h5>
+    {% else %}
+      <h5>{{ member.username }}</h5>
+    {% endif %}
   {% endfor %}<br>
   <h4>Debts:</h4>
   {% for member in group.members %}

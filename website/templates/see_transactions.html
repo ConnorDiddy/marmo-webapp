@@ -17,7 +17,7 @@
           <td>{% for member in group.members %}{% if member.id == transaction.payer_id %}{{ member.username }}{% endif %}{% endfor %}</td>
           <td>{% for member in group.members %}{% if member.id == transaction.creator_id %}{{ member.username }}{% endif %}{% endfor %}</td>
           <td>{{transaction.date_created}}</td>
-          <td><a href="#">Delete</a></td>
+          <td><a href="delete-transaction?groupID={{ group.id }}&tranID={{ transaction.id }}">Delete</a></td>
         </tr>
     {% endfor %}
     </table>
@@ -41,7 +41,7 @@
           <td>{% for member in group.members %}{% if member.id == payment.payer_id %}{{ member.username }}{% endif %}{% endfor %}</td>
           <td>{% for member in group.members %}{% if member.id == payment.recipient_id %}{{ member.username }}{% endif %}{% endfor %}</td>
           <td>{{payment.date_created}}</td>
-          <td><a href="#">Delete</a></td>
+          <td><a href="delete-payment?groupID={{ group.id }}&paymentID={{ payment.id }}">Delete</a></td>
         </tr>
     {% endfor %}
     </table>

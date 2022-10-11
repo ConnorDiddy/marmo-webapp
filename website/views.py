@@ -162,3 +162,27 @@ def show_transactions():
     group = Group.query.filter_by(id=group_id).first()
 
     return render_template('see_transactions.html', user=current_user, group=group)
+
+@views.route('delete-transaction', methods=["GET"])
+@login_required
+def delete_transaction():
+    transaction_id = request.args['tranID']
+    group_id = request.args['groupID']
+    group = Group.query.filter_by(id=group_id).first()
+    transaction = Transaction.query.filter_by(id=transaction_id).first()
+    db.session.delete(transaction)
+    db.session.commit()
+
+    return render_template('see_transactions.html', user=current_user, group=group)
+
+@views.route('delete-payment', methods=["GET"])
+@login_required
+def delete_payment():
+    payment_id = request.args['paymentID']
+    group_id = request.args['groupID']
+    group = Group.query.filter_by(id=group_id).first()
+    payment = Payment.query.filter_by(id=payment_id).first()
+    db.session.delete(payment)
+    db.session.commit()
+
+    return render_template('see_transactions.html', user=current_user, group=group)
