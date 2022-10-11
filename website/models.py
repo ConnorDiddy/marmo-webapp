@@ -68,15 +68,19 @@ class Group(db.Model):
             # add the amount to the member's borrowed amount
             total_borrowed += (transaction.amount / len(self.members))
 
+        overall = total_paid - total_borrowed
+
         for payment in self.payments:
              #if the member made a payment to another member, add to member's paid amount
             if payment.payer_id == member.id:
-                total_paid += payment.amount
+                overall += payment.amount
              #if the member received a payment from another member, add to member's borrowed amount
             if payment.recipient_id == member.id:
-                total_borrowed += payment.amount
+                overall -= payment.amount
 
-        overall = total_paid - total_borrowed
+        # round to nearest cent
+        overall = round(overall, 2)
+
         return_list = [overall]
         if overall == 0:
             return_list.append(0)

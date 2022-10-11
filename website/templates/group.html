@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 <div class="container" align="center">
-  <br><h1 align="center">{{ group.group_name }}</h1>
+  <br><h1 align="center"><span style="color: red;">{{ group.group_name }}</span></h1>
   <h4>Group id: {{ group.id }}</h4><br>
   <h4>Members:</h4>
   {% for member in group.members %}
@@ -19,7 +19,8 @@
     {% endif %}
   {% endfor %}<br>
   <a class="btn btn-secondary" href="/" role="button">Back</a>
-  <a class="btn btn-primary" href="/add-transaction" role="button">Add transaction</a>
-  <a class="btn btn-primary" href="/add-payment" role="button">Add payment</a>
+  <a class="btn btn-primary" href="/add-transaction?groupID={{ group.id }}" role="button">Add transaction</a>
+  <a class="btn btn-primary" href="/add-payment?groupID={{ group.id }}" role="button">Add payment</a><br><br>
+  <a class="btn btn-secondary btn-sm" href="/see-transactions?groupID={{ group.id }}" role="button">Group History</a>
 </div>
 {% endblock %}

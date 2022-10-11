@@ -1,18 +1,29 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<br><h3 align="center">Add payment</h3>
+<br><h3 align="center">Add payment in <span style="color: red;">{{ group.group_name }}</span></h3>
 
-    <form method="post" action="http://127.0.0.1:5000/add-transaction" align="center">
-        <label for="group_id">Group id:</label><br>
-        <input type="text" id="group_id" name="group_id"><br><br>
-        <label for="description">Description:</label><br>
+    <form method="post" action="http://127.0.0.1:5000/add-payment" align="center">
+
+        <span class="input-group-addon">Payer:</span>
+            <select name="payer_id" class="selectpicker form-control">
+              {% for member in group.members %}
+              <option value="{{ member.id }}">{{ member.username }}</option>
+              {% endfor %}
+            </select><br>
+
+        <span class="input-group-addon">Recipient:</span>
+            <select name="recipient_id" class="selectpicker form-control">
+              {% for member in group.members %}
+              <option value="{{ member.id }}">{{ member.username }}</option>
+              {% endfor %}
+            </select><br>
+
+        <label for="description">Notes:</label><br>
         <input type="text" id="description" name="description"><br><br>
         <label for="amount">Amount:</label><br>
-        <input type="number" id="amount" name="amount"><br><br>
-        <label for="payer_id">Payer id:</label><br>
-        <input type="text" id="payer_id" name="payer_id"><br><br>
-        <label for="recipient_id">Recipient id:</label><br>
-        <input type="text" id="recipient_id" name="recipient_id"><br><br>
-        <a class="btn btn-secondary" href="/" role="button">Back</a>
+        <input type="number" id="amount" name="amount" step="0.01"><br><br>
+        <input type="hidden" id="group_id" name="group_id" value="{{ group.id }}">
+
+        <a class="btn btn-secondary" href="mygroup?groupID={{ group.id }}" role="button">Back</a>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form><br>
 {% endblock %}

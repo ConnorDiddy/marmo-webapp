@@ -1,6 +1,6 @@
 
 from sre_constants import SUCCESS
-from flask import Blueprint, request, render_template, flash
+from flask import Blueprint, request, render_template, flash, redirect
 from .models import Group, User, Transaction, Payment
 from flask_login import login_required, current_user
 from . import db
@@ -63,8 +63,13 @@ def add_transaction():
         db.session.commit()
         flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
 
-        return home()
-    return render_template('add_transaction.html', user=current_user)
+        return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
+
+    if request.method == "GET":
+        group_id = request.args['groupID']
+        group = Group.query.filter_by(id=group_id).first()
+
+        return render_template('add_transaction.html', user=current_user, group=group)
 
 @views.route('add-payment', methods=["GET","POST"])
 @login_required
@@ -76,14 +81,20 @@ def payment():
         recipient_id = request.form.get('recipient_id')
         description = request.form.get('description')
         recipient = User.query.filter_by(id=recipient_id).first()
+        group = Group.query.filter_by(id=group_id).first()
 
         new_payment = Payment(payer_id=payer_id, amount=amount, \
             recipient_id=recipient_id, group_id=group_id, description=description)
         db.session.add(new_payment)
         db.session.commit()
         flash(f"Payment of ${new_payment.amount} to {recipient.username} successfully submitted!", category=SUCCESS)
-        return home()
-    return render_template('add_payment.html', user=current_user)
+        return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
+
+    if request.method == "GET":
+        group_id = request.args['groupID']
+        group = Group.query.filter_by(id=group_id).first()
+
+        return render_template('add_payment.html', user=current_user, group=group)
 
 @views.route('calculate-debts', methods=["POST"])
 def calculate_debts():
@@ -137,12 +148,17 @@ def search_groups():
 
     return return_dict
 
-@views.route('mygroup', methods=["GET", "POST"])
+@views.route('mygroup', methods=["GET"])
 def show_group():
     if request.method == "GET":
         group_id = request.args['groupID']
         group = Group.query.filter_by(id=group_id).first()
 
         return render_template("group.html", user=current_user, group=group)
-    else:
-        return "Use a get request"
+
+@views.route('see-transactions', methods=["GET"])
+def show_transactions():
+    group_id = request.args['groupID']
+    group = Group.query.filter_by(id=group_id).first()
+
+    return render_template('see_transactions.html', user=current_user, group=group)

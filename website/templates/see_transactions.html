@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<h3 align="center">Transactions for <span style="color: red;">{{ group.group_name }}</span></h3><br>
+
+<div class="container" align="left" padding="1rem">
+    <table class="table">
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Payer</th>
+            <th>Creator</th>
+            <th>Date Created</th>
+        </tr>
+    {% for transaction in group.transactions %}
+        <tr>
+          <td>{{transaction.description}}</td>
+          <td>${{transaction.amount}}</td>
+          <td>{% for member in group.members %}{% if member.id == transaction.payer_id %}{{ member.username }}{% endif %}{% endfor %}</td>
+          <td>{% for member in group.members %}{% if member.id == transaction.creator_id %}{{ member.username }}{% endif %}{% endfor %}</td>
+          <td>{{transaction.date_created}}</td>
+          <td><a href="#">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+
+<h3 align="center">Payments for <span style="color: red;">{{ group.group_name }}</span></h3><br>
+
+<div class="container" align="left" padding="1rem">
+    <table class="table">
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Payer</th>
+            <th>Recipient</th>
+            <th>Date Created</th>
+        </tr>
+    {% for payment in group.payments %}
+        <tr>
+          <td>{{payment.description}}</td>
+          <td>${{payment.amount}}</td>
+          <td>{% for member in group.members %}{% if member.id == payment.payer_id %}{{ member.username }}{% endif %}{% endfor %}</td>
+          <td>{% for member in group.members %}{% if member.id == payment.recipient_id %}{{ member.username }}{% endif %}{% endfor %}</td>
+          <td>{{payment.date_created}}</td>
+          <td><a href="#">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div class="container-fluid">
+        <a class="btn btn-secondary" href="mygroup?groupID={{ group.id }}" role="button">Back</a>
+    </div>
+    
+</div>
+
+{% endblock %}
