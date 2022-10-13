@@ -10,21 +10,25 @@
       <h5>{{ member.username }}</h5>
     {% endif %}
   {% endfor %}<br>
-  <h4>Debts:</h4>
+  <h4>Balances:</h4>
   {% for member in group.members %}
     {% if group.calculate_debts(member)[1] == 0 %}
       <h6>{{member.username}} is <span style="color: rgb(0, 197, 0);">all settled up!</span></h6>
     {% endif %}
     {% if group.calculate_debts(member)[1] == 1 %}
-      <h6>{{member.username}} is owed <span style="color: rgb(0, 197, 0);">${{ group.calculate_debts(member)[0] }}</span>.</h6>
+      <h6>{{member.username}}: <span style="color: rgb(0, 197, 0);">+ ${{ group.calculate_debts(member)[0] }}</span></h6>
     {% endif %}
     {% if group.calculate_debts(member)[1] == -1 %}
-      <h6>{{member.username}} owes <span style="color: red;">${{ group.calculate_debts(member)[0] }}</span>.</h6>
+      <h6>{{member.username}}: <span style="color: red;">- ${{ group.calculate_debts(member)[0] }}</span></h6>
     {% endif %}
   {% endfor %}<br>
   <a class="btn btn-secondary" href="/" role="button">Back</a>
   <a class="btn btn-primary" href="/add-transaction?groupID={{ group.id }}" role="button">Add transaction</a>
   <a class="btn btn-primary" href="/add-payment?groupID={{ group.id }}" role="button">Add payment</a><br><br>
   <a class="btn btn-secondary btn-sm" href="/see-transactions?groupID={{ group.id }}" role="button">Group History</a>
+  <a class="btn btn-danger btn-sm" href="/leave-group?memberID={{ user.id }}&groupID={{ group.id }}" role="button">Leave group</a>
+  {% if group.admin_id == user.id %}
+  <a class="btn btn-danger btn-sm" href="/delete-group?memberID={{ user.id }}&groupID={{ group.id }}" role="button">Delete group</a>
+  {% endif %}
 </div>
 {% endblock %}

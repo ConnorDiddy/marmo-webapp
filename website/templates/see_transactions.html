@@ -8,6 +8,7 @@
             <th>Amount</th>
             <th>Payer</th>
             <th>Creator</th>
+            <th>Members Included</th>
             <th>Date Created</th>
         </tr>
     {% for transaction in group.transactions %}
@@ -16,6 +17,9 @@
           <td>${{transaction.amount}}</td>
           <td>{% for member in group.members %}{% if member.id == transaction.payer_id %}{{ member.username }}{% endif %}{% endfor %}</td>
           <td>{% for member in group.members %}{% if member.id == transaction.creator_id %}{{ member.username }}{% endif %}{% endfor %}</td>
+
+          <td>{{ transaction.members_included }}</td>
+
           <td>{{transaction.date_created}}</td>
           <td><a href="delete-transaction?groupID={{ group.id }}&tranID={{ transaction.id }}">Delete</a></td>
         </tr>

@@ -10,11 +10,21 @@
         <input type="hidden" id="group_id" name="group_id" value="{{ group.id }}">
 
         <span class="input-group-addon">Who paid?</span>
-            <select name="payer_id" class="selectpicker form-control">
-              {% for member in group.members %}
-              <option value="{{ member.id }}">{{ member.username }}</option>
-              {% endfor %}
-            </select>
+        <select name="payer_id" class="selectpicker form-control">
+            {% for member in group.members %}
+            <option value="{{ member.id }}">{{ member.username }}</option>
+            {% endfor %}
+        </select><br>
+
+        <span class="input-group-addon">Split between:</span><br>
+        <div class="form-check form-check-inline">
+            {% for member in group.members %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="{{ member.id }}" value="{{ member.id }}" name="member_included">
+                <label class="form-check-label" for="{{ member.id }}">{{ member.username }}</label>
+            </div><br><br><br>
+            {% endfor %}
+        </div>
 
         <br><a class="btn btn-secondary" href="mygroup?groupID={{ group.id }}" role="button">Back</a>
         <button type="submit" class="btn btn-primary">Submit</button>

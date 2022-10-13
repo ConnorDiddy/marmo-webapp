@@ -8,6 +8,11 @@ group_member = db.Table('group_member',
     db.Column('group_id', db.Integer, db.ForeignKey('group.id'))
 )
 
+user_transaction = db.Table('user_transaction',
+    db.Column('user.id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('transaction_id', db.Integer, db.ForeignKey('transaction.id'))
+)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200), nullable=False)
@@ -15,9 +20,10 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     groups = db.relationship('Group', secondary=group_member, backref="members")
+    transactions = db.relationship('Transaction', secondary=user_transaction, backref="members_included")
 
     def __repr__(self):
-        return f'<User: {self.username}>'
+        return f'{self.username}'
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,7 +72,8 @@ class Group(db.Model):
             if transaction.payer_id == member.id:
                 total_paid += transaction.amount
             # add the amount to the member's borrowed amount
-            total_borrowed += (transaction.amount / len(self.members))
+            if member in transaction.members_included:
+                total_borrowed += (transaction.amount / len(transaction.members_included))
 
         overall = total_paid - total_borrowed
 

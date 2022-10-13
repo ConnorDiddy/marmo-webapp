@@ -7,7 +7,8 @@
 <div class="container" align="left" padding="1rem">
     <h2>My groups:</h2>
     {% for group in user.groups %}
-    <h5><a href="mygroup?groupID={{ group.id }}">{{ group.group_name }}</h5>
+    <span><h5><a href="mygroup?groupID={{ group.id }}">{{ group.group_name }}</a></h5>
+    
     {% endfor %}
 </div>
 

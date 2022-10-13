@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<br><h1 align="center">{{ user.username }}</h1><br>
+<div class="container" align="center">
+    <h5>Username : {{ user.username }} <a href="#">Edit</a></h5>
+    <h5>Email : {{ user.email }} <a href="#">Edit</a></h5>
+    <h5>id : {{ user.id }}</h5><br><br>
+
+    <a class="btn btn-danger" href="delete-account?id={{ user.id }}" role="button">Delete Account</a>
+</div>
+{% endblock %}

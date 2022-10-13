@@ -1,5 +1,5 @@
 
-from sre_constants import SUCCESS
+from sre_constants import FAILURE, SUCCESS
 from flask import Blueprint, request, render_template, flash, redirect
 from .models import Group, User, Transaction, Payment
 from flask_login import login_required, current_user
@@ -8,10 +8,12 @@ from . import db
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
-@login_required
 def home():
-
-    return render_template("home.html", user=current_user)
+    print(str(current_user))
+    if (str(current_user)[0] != '<'):
+        return render_template("home.html", user=current_user)
+    else:
+        return render_template("index.html", user=current_user)
 
 @views.route('/create-group', methods=["GET", "POST"])
 @login_required
@@ -55,10 +57,16 @@ def add_transaction():
         description = request.form.get('description')
         creator_id = current_user.id
         group_id = request.form.get('group_id')
+        members_submitted = request.form.getlist('member_included')
         group = Group.query.filter_by(id=group_id).first()
-        
+
+        members_included = []
+        for member in members_submitted:
+            member = User.query.filter_by(id=int(member)).first()
+            members_included.append(member)
+
         new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
-            creator_id=creator_id, group_id=group_id)
+            creator_id=creator_id, group_id=group_id, members_included=members_included)
         db.session.add(new_transaction)
         db.session.commit()
         flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
@@ -186,3 +194,59 @@ def delete_payment():
     db.session.commit()
 
     return render_template('see_transactions.html', user=current_user, group=group)
+
+@views.route('leave-group', methods=["GET"])
+@login_required
+def leave_group():
+    member_id = request.args['memberID']
+    group_id = request.args['groupID']
+    group = Group.query.filter_by(id=group_id).first()
+    member = User.query.filter_by(id=member_id).first()
+
+    member.groups.remove(group)
+
+    if group.members == []:
+        db.session.delete(group)
+    elif group.admin_id == member.id:
+        group.admin_id = group.members[0].id
+    db.session.commit()
+    flash(f"You have left {group.group_name}.", category=SUCCESS)
+
+    return home()
+
+@views.route('delete-group', methods=["GET"])
+@login_required
+def delete_group():
+    member_id = request.args['memberID']
+    group_id = request.args['groupID']
+    group = Group.query.filter_by(id=group_id).first()
+    member = User.query.filter_by(id=member_id).first()
+
+    if group.admin_id == member.id:
+        db.session.delete(group)
+        db.session.commit()
+        flash(f"{group.group_name} has been deleted.", category=SUCCESS)
+    else:
+        flash(f"You must be the admin to be able to delete this group.", category=FAILURE)
+
+    return home()
+
+@views.route('account', methods=["GET", "POST"])
+@login_required
+def account():
+    return render_template("account.html", user=current_user)
+
+@views.route('delete-account', methods=["GET"])
+@login_required
+def delete_account():
+    user_id = request.args['id']
+    user = User.query.filter_by(id=user_id).first()
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return home()
+
+@views.route('/base')
+def base():
+    return "The base page for users not logged in. <a href='login'>Log in</a>"
