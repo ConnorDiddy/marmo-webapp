@@ -20,8 +20,10 @@
         <div class="form-check form-check-inline">
             {% for member in group.members %}
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="{{ member.id }}" value="{{ member.id }}" name="member_included">
-                <label class="form-check-label" for="{{ member.id }}">{{ member.username }}</label>
+                <input class="form-check-input" type="checkbox" id="{{ member.id }}" value="{{ member.id }}" name="member_included" checked>
+                <label class="form-check-label" for="{{ member.id }}">
+                    {{ member.username }}{% if member.id == user.id %} (me){% endif %}
+                </label>
             </div><br><br><br>
             {% endfor %}
         </div>

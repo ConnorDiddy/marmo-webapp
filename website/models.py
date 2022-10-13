@@ -47,18 +47,6 @@ class Group(db.Model):
         payment = {"date": datetime.now(), "payer_id": payer_id, "amount": amount, \
             "recipient_id": recipient_id}
         group_id.payments.append(payment)
-
-    def announce_group(group_id):
-        return (f" {group_id.group_name} has {len(group_id.member_ids)} members and the admin is {group_id.member_ids[str(group_id.admin_id)]}.")+\
-        (f" Members: {group_id.member_ids} ")
-
-    def show_balance(group_id):
-        balance = 0
-        for transaction in group_id.transactions:
-            balance += transaction['amount']
-        print(f"{group_id.group_name} has a total balance of ${balance}.")
-
-    def show_transactions(group_id):
         for transaction in group_id.transactions:
             print(transaction)
 
@@ -103,7 +91,7 @@ class Transaction(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     payer_id = db.Column(db.Integer, nullable=False)
     creator_id = db.Column(db.Integer, nullable=False)
-    amount = db.Column(db.Float, nullable=False)
+    amount = db.Column(db.Numeric(10, 2), nullable=False)
     description = db.Column(db.String(300), nullable=False)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 
@@ -115,7 +103,7 @@ class Payment(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     payer_id = db.Column(db.Integer, nullable=False)
     recipient_id = db.Column(db.Integer, nullable=False)
-    amount = db.Column(db.Float, nullable=False)
+    amount = db.Column(db.Numeric(10,2), nullable=False)
     description = db.Column(db.String(300), nullable=False)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 

@@ -9,11 +9,10 @@ views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-    print(str(current_user))
     if (str(current_user)[0] != '<'):
         return render_template("home.html", user=current_user)
     else:
-        return render_template("index.html", user=current_user)
+        return render_template("landing.html", user=current_user)
 
 @views.route('/create-group', methods=["GET", "POST"])
 @login_required
@@ -64,12 +63,16 @@ def add_transaction():
         for member in members_submitted:
             member = User.query.filter_by(id=int(member)).first()
             members_included.append(member)
+        if members_included == []:
+            flash("You must include at least one member who is responsible for paying.", category='error')
 
-        new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
-            creator_id=creator_id, group_id=group_id, members_included=members_included)
-        db.session.add(new_transaction)
-        db.session.commit()
-        flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
+            return render_template("add_transaction.html", user=current_user, group=group)
+        else:
+            new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
+                creator_id=creator_id, group_id=group_id, members_included=members_included)
+            db.session.add(new_transaction)
+            db.session.commit()
+            flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
 
         return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
 
