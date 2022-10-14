@@ -1,3 +1,41 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<h1>The base page for users not logged in. <a href='login'>Log in</a></h1>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Marmo.</title>
+  <meta charset="utf-8">
+  <meta name="viewport" 
+        content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel ="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital@0;1&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+</head>
+<header>
+  <a href="index.html"><img src="Logos/logo3small.png"></a>
+     <div style="margin-right: 5rem; position: sticky;">
+       <a class="signup" href="sign-up">Sign Up</a> &nbsp;
+       <a href="login" id="signin">Log In</a>
+    </div>
+ </header>
+<body>
+<div id="banner">
+  <div id="hometext">
+      <h1>Reimbursements, reimagined.</h1>
+      <h2>We make expense sharing <strong>stress-free.</strong> Split costs between groups and track spending easier than ever before.<br><br>Best part? It's FREE. No cap.</h2>
+    <br><br><a href="signup.html" class="buttonClass">Sign Up</a>
+  </div>
+  <div id="homehero"></div>
+</div>
+<div id="wrapper">
+  <main>
+ 
+  </main>
+</div>
+  <footer>
+      Copyright &copy; 2022 Marmo Expense Sharing<br>
+      <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
+  </footer>
+</div>
+</body>
+</html>
