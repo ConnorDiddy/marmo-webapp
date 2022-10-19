@@ -156,7 +156,10 @@ label{
     padding: 10px;
     text-align: right;
 }
-
+#howitworks{
+    display: grid;
+    text-align: center;
+}
 #mySubmit{
     width: 10rem;
     grid-column: 2 / 3;

@@ -1,40 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>marmo</title>
+<title>Marmo</title>
   <meta charset="utf-8">
   <meta name="viewport" 
         content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <link rel ="stylesheet" href="style.css">
+  <link rel ="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Karla:ital@0;1&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
 </head>
 <header>
-  <a href="index.html"><img src="Logos/logo3small.png"></a>
-     <div style="margin-right: 5rem;">
-       <a class="signup" href="signup.html">Sign Up</a> &nbsp;
-       <a href="" id="signin">Sign In</a>
+  <a href="/"><img src="{{ url_for('static', filename='logo3small.png') }}"></a>
+     <div style="margin-right: 5rem; position: sticky;">
+       <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
+       <a href="/login" id="signin">Log In</a>
     </div>
  </header>
 <body>
+<div id="pagecontainer">
 <div id="banner">
   <div id="hometext">
       <h1>Reimbursements, reimagined.</h1>
-        <h2>We make expense sharing <strong>stress-free.</strong> Split costs between groups and track spending easier than ever before.<br><br>Best part? It's FREE. No cap.</h2>
-    <a class="signup" href="signup.html">Sign Up</a>
+      <h2>We make expense sharing <strong>stress-free.</strong> Split costs between groups and track spending easier than ever before.<br><br>Best part? It's FREE. No cap.</h2>
+    <br><br><a href="/login" class="buttonClass">Sign Up</a>
   </div>
-  <div id="homehero"></div>
+  <div id="homehero"><img src="{{ url_for('static', filename='phonemockup.png') }}"></div>
 </div>
-<div id="wrapper">
-  <main>
-    </div>
-  </main>
-  <footer>
-      Copyright &copy; 2022 Marmo Expense Sharing<br>
-      <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
-  </footer>
+  <div id="wrapper">
+    <main>
+      <h1 style="text-align: center;"><b>Just</b> marmo<b> it.</b></h1>
+      <div id="howitworks">
+        <div id="groupexample1">
+        <img src="Images/room.jpg" width="250" height="250">
+        <h3>Housemates</h3>
+        <p>No more awkward conversations or time wasted figuring out how to split rent, utilities, and groceries between housemates.</p>
+        </div>
+        <div id="groupexample2">
+          <img src="Images/trip.jpg" width="250" height="250">
+          <h3>Trips</h3>
+          <p> Trips are full of group expenses like hotels, travel, food, and excursions. Marmo takes care of all that so you can enjoy your vacation.</p>
+          </div>
+          <div id="groupexample3">
+            <img src="Images/food.jpg" width="250" height="250">
+            <h3>Dinners</h3>
+            <p>Relax and enjoy a meal with friends without worrying about how to split the check. Your server will love you for it.</p>
+            </div>
+      </div>
+<div id="features">
+  <div id="record">
+      <h3>Record Transactions</h3>
+      <p>Simply enter your transaction details or scan a receipt.<br>All members of your group can see the expense and settle up.  Choose between our presets or customize how the bill is split.<br>Other members can add transactions and we’ll take care of the math to figure out who owes who.
+        </p>
+     
+  </div>
+
+
+</div>
+
+
+      
+    </main>
+  </div>
+    <footer>
+        Copyright &copy; 2022 Marmo Expense Sharing<br>
+        <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
+    </footer>
 </div>
 </body>
 </html>
