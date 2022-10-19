@@ -1,28 +1,40 @@
-{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
-    %}
-    <form method="POST">
-      <h3 align="center">Login</h3>
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          name="email"
-          placeholder="Enter email"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          name="password"
-          placeholder="Enter password"
-        />
-      </div>
-      <br />
-      <button type="submit" class="btn btn-primary">Login</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" 
+        content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel ="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital@0;1&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+</head>
+<header>
+  <a href="/"><img src="Logos/logo3small.png"></a>
+     <div style="margin-right: 5rem; position: sticky;">
+       <a class="signup" href="sign-up">Sign Up</a> &nbsp;
+    </div>
+ </header>
+<body>
+<div id="wrapper">
+  <main>
+    <h1>Log In</h1>
+    <form method="post">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="passsword" name="password" required>
+        <input type="submit" id="mySubmit" value="Log In">
     </form>
-    {% endblock %}
+  </main>
+</div>
+  <footer>
+      Copyright &copy; 2022 Marmo Expense Sharing<br>
+      <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
+  </footer>
+</div>
+</body>
+</html>

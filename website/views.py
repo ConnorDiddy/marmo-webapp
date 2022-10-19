@@ -2,6 +2,7 @@
 from sre_constants import FAILURE, SUCCESS
 from flask import Blueprint, request, render_template, flash, redirect
 from .models import Group, User, Transaction, Payment
+from .validation import Validation
 from flask_login import login_required, current_user
 from . import db
 
@@ -18,17 +19,19 @@ def home():
 @login_required
 def create_group():
     if request.method == "POST":
-        # TODO add validation
-        admin_id = current_user.id
-        group_name = request.form.get('group_name')
+        try:
+            admin_id = current_user.id
+            group_name = request.form.get('group_name')
+            Validation.create_group(group_name)
+            new_group = Group(admin_id=admin_id, group_name=group_name)
+            current_user.groups.append(new_group)
+            db.session.add(new_group)
+            db.session.commit()
+            flash(f"Group {new_group.group_name} successfully created!", category=SUCCESS)
 
-        new_group = Group(admin_id=admin_id, group_name=group_name)
-        current_user.groups.append(new_group)
-        db.session.add(new_group)
-        db.session.commit()
-        flash(f"Group {new_group.group_name} successfully created!", category=SUCCESS)
-
-        return home()
+            return home()
+        except Exception as e:
+            flash(str(e), category='error')
     
     return render_template("create_group.html", user=current_user)
 
@@ -36,45 +39,52 @@ def create_group():
 @login_required
 def join_group():
     if request.method == "POST":
-        group_id = request.form.get('group_id')
+        try:
+            group_id = request.form.get('group_id')
+            Validation.join_group(group_id, current_user)
+            group = Group.query.filter_by(id=group_id).first()
+            current_user.groups.append(group)
+            db.session.commit()
+            flash(f"User {current_user.username} successfully joined {group.group_name}!", category=SUCCESS)
 
-        group = Group.query.filter_by(id=group_id).first()
-        current_user.groups.append(group)
-        db.session.commit()
-        flash(f"User {current_user.username} successfully joined {group.group_name}!", category=SUCCESS)
-
-        return home()
+            return home()
+        except Exception as e:
+            flash(e, category='error')
 
     return render_template("join_group.html", user=current_user)
 
 @views.route('add-transaction', methods=["GET","POST"])
 @login_required
 def add_transaction():
+    group_id = request.form.get('group_id')
+    group = Group.query.filter_by(id=group_id).first()
     if request.method == "POST":
-        payer_id = request.form.get('payer_id')
-        amount = request.form.get('amount')
-        description = request.form.get('description')
-        creator_id = current_user.id
-        group_id = request.form.get('group_id')
-        members_submitted = request.form.getlist('member_included')
-        group = Group.query.filter_by(id=group_id).first()
+        try:
+            payer_id = request.form.get('payer_id')
+            amount = request.form.get('amount')
+            description = request.form.get('description')
+            creator_id = current_user.id
+            members_submitted = request.form.getlist('member_included')
+            
+            Validation.add_transaction(payer_id, amount, description, creator_id, group_id, members_submitted)
 
-        members_included = []
-        for member in members_submitted:
-            member = User.query.filter_by(id=int(member)).first()
-            members_included.append(member)
-        if members_included == []:
-            flash("You must include at least one member who is responsible for paying.", category='error')
+            members_included = []
+            for member in members_submitted:
+                member = User.query.filter_by(id=int(member)).first()
+                members_included.append(member)
 
-            return render_template("add_transaction.html", user=current_user, group=group)
-        else:
             new_transaction = Transaction(payer_id=payer_id, amount=amount, description=description,\
                 creator_id=creator_id, group_id=group_id, members_included=members_included)
             db.session.add(new_transaction)
             db.session.commit()
             flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
 
-        return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
+            return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
+
+        except Exception as e:
+            flash(str(e), category='error')
+
+        return redirect(f"http://127.0.0.1:5000/add-transaction?groupID={group.id}")
 
     if request.method == "GET":
         group_id = request.args['groupID']
@@ -85,21 +95,28 @@ def add_transaction():
 @views.route('add-payment', methods=["GET","POST"])
 @login_required
 def payment():
+    group_id = request.form.get('group_id')
+    group = Group.query.filter_by(id=group_id).first()
     if request.method == "POST":
-        payer_id = request.form.get('payer_id')
-        group_id = request.form.get('group_id')
-        amount = request.form.get('amount')
-        recipient_id = request.form.get('recipient_id')
-        description = request.form.get('description')
-        recipient = User.query.filter_by(id=recipient_id).first()
-        group = Group.query.filter_by(id=group_id).first()
+        try:
+            payer_id = request.form.get('payer_id')
+            group_id = request.form.get('group_id')
+            amount = request.form.get('amount')
+            recipient_id = request.form.get('recipient_id')
+            description = request.form.get('description')
 
-        new_payment = Payment(payer_id=payer_id, amount=amount, \
-            recipient_id=recipient_id, group_id=group_id, description=description)
-        db.session.add(new_payment)
-        db.session.commit()
-        flash(f"Payment of ${new_payment.amount} to {recipient.username} successfully submitted!", category=SUCCESS)
-        return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
+            Validation.add_payment(payer_id, amount, recipient_id, description)
+            recipient = User.query.filter_by(id=recipient_id).first()
+
+            new_payment = Payment(payer_id=payer_id, amount=amount, \
+                recipient_id=recipient_id, group_id=group_id, description=description)
+            db.session.add(new_payment)
+            db.session.commit()
+            flash(f"Payment of ${new_payment.amount} to {recipient.username} successfully submitted!", category=SUCCESS)
+        except Exception as e:
+            flash(str(e), category='error')
+
+        return redirect(f"http://127.0.0.1:5000/add-payment?groupID={group.id}")
 
     if request.method == "GET":
         group_id = request.args['groupID']
