@@ -1,40 +1,5 @@
-{% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %} {% if category ==
-  'error' %}
-  <div class="alert alert-danger alter-dismissable fade show" role="alert">
-    {{ message }}
-    <button type="button" class="close" data-dismiss="alert">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  {% else %}
-  <div class="alert alert-success alter-dismissable fade show" role="alert">
-    {{ message }}
-    <button type="button" class="close" data-dismiss="alert">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  {% endif %} {% endfor %} {% endif %} {% endwith %}
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Log In</title>
-  <meta charset="utf-8">
-  <meta name="viewport" 
-        content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <link rel ="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Karla:ital@0;1&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
-</head>
-<header>
-  <a href="/"><img src="{{ url_for('static', filename='logo3small.png') }}"></a>
-     <div style="margin-right: 5rem; position: sticky;">
-       <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
-    </div>
- </header>
 <body>
 <div id="wrapper">
   <main>
@@ -49,9 +14,5 @@
     </form>
   </main>
 </div>
-<footer>
-  Copyright &copy; 2022 Marmo Expense Sharing<br>
-  <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
-</footer>
 </body>
-</html>
+{% endblock %}
