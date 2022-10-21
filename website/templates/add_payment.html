@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 <br><h3 align="center">Add payment in <span style="color: red;">{{ group.group_name }}</span></h3>
 
-    <form method="post" action="http://127.0.0.1:5000/add-payment" align="center">
+    <form method="post" action="/add-payment" align="center">
 
         <span class="input-group-addon">Payer:</span>
             <select name="payer_id" class="selectpicker form-control">

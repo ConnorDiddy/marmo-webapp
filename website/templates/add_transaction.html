@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 <br><h3 align="center">Add transaction to <span style="color: red;">{{ group.group_name }}</span></h3>
 
-    <form method="post" action="http://127.0.0.1:5000/add-transaction" align="center">
+    <form method="post" action="/add-transaction" align="center">
 
         <label for="description">Description:</label><br>
         <input type="text" id="description" name="description"><br><br>

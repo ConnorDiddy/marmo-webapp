@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 <br><h3 align="center">Create a Group</h3>
 
-    <form method="post" action="http://127.0.0.1:5000/create-group" align="center">
+    <form method="post" action="/create-group" align="center">
         <label for="group_name">Group name:</label><br>
         <input type="text" id="group_name" name="group_name"><br><br>
         <a class="btn btn-secondary" href="/" role="button">Back</a>
