@@ -79,12 +79,12 @@ def add_transaction():
             db.session.commit()
             flash(f"Transaction for ${new_transaction.amount} successfully submitted to {group.group_name}!", category=SUCCESS)
 
-            return redirect(f"http://127.0.0.1:5000/mygroup?groupID={group.id}")
+            return redirect(f"/mygroup?groupID={group.id}")
 
         except Exception as e:
             flash(str(e), category='error')
 
-        return redirect(f"http://127.0.0.1:5000/add-transaction?groupID={group.id}")
+        return redirect(f"/add-transaction?groupID={group.id}")
 
     if request.method == "GET":
         group_id = request.args['groupID']
@@ -116,7 +116,7 @@ def payment():
         except Exception as e:
             flash(str(e), category='error')
 
-        return redirect(f"http://127.0.0.1:5000/add-payment?groupID={group.id}")
+        return redirect(f"/add-payment?groupID={group.id}")
 
     if request.method == "GET":
         group_id = request.args['groupID']
