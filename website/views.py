@@ -1,9 +1,10 @@
 
 from sre_constants import FAILURE, SUCCESS
-from flask import Blueprint, request, render_template, flash, redirect
+from flask import Blueprint, request, render_template, flash, redirect, url_for
 from .models import Group, User, Transaction, Payment
 from .validation import Validation
-from flask_login import login_required, current_user
+from werkzeug.security import check_password_hash
+from flask_login import login_required, current_user, login_user
 from . import db
 
 views = Blueprint('views', __name__)
@@ -274,3 +275,13 @@ def base():
 @views.route('style.css')
 def stylesheet():
     return "templates/style.css"
+
+@views.route('/test', methods=['GET', 'POST'])
+def login():
+    email = 'Johndoe@mail.com'
+
+    user = User.query.filter_by(email=email).first()
+    flash('Logged in successfully!', category='success')
+    login_user(user, remember=True)
+
+    return redirect(url_for('views.home'))
