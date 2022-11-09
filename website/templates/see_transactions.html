@@ -22,6 +22,7 @@
 
           <td>{{transaction.date_created}}</td>
           <td><a href="delete-transaction?groupID={{ group.id }}&tranID={{ transaction.id }}">Delete</a></td>
+          <td><a href="edit-transaction?groupID={{ group.id }}&tranID={{ transaction.id }}">Edit</a></td>
         </tr>
     {% endfor %}
     </table>
@@ -46,6 +47,7 @@
           <td>{% for member in group.members %}{% if member.id == payment.recipient_id %}{{ member.username }}{% endif %}{% endfor %}</td>
           <td>{{payment.date_created}}</td>
           <td><a href="delete-payment?groupID={{ group.id }}&paymentID={{ payment.id }}">Delete</a></td>
+          <td><a href="edit-payment?groupID={{ group.id }}&paymentID={{ payment.id }}">Edit</a></td>
         </tr>
     {% endfor %}
     </table>

@@ -204,6 +204,53 @@ def delete_transaction():
 
     return render_template('see_transactions.html', user=current_user, group=group)
 
+@views.route('edit-transaction', methods=["GET", "POST"])
+@login_required
+def edit_transaction():
+    if request.method == "GET":
+        transaction_id = request.args['tranID']
+        group_id = request.args['groupID']
+        group = Group.query.filter_by(id=group_id).first()
+        transaction = Transaction.query.filter_by(id=transaction_id).first()
+
+        return render_template('edit_transaction.html', user=current_user, group=group, transaction=transaction)
+
+    if request.method == "POST":
+        try:
+            group_id = request.form.get('group_id')
+            group = Group.query.filter_by(id=group_id).first()
+            transaction_id = request.form.get('transaction_id')
+            transaction = Transaction.query.filter_by(id=transaction_id).first()
+
+            payer_id = request.form.get('payer_id')
+            amount = request.form.get('amount')
+            description = request.form.get('description')
+            creator_id = current_user.id
+            members_submitted = request.form.getlist('member_included')
+            
+            Validation.add_transaction(payer_id, amount, description, creator_id, group_id, members_submitted)
+
+            members_included = []
+            for member in members_submitted:
+                member = User.query.filter_by(id=int(member)).first()
+                members_included.append(member)
+
+            transaction.payer_id = payer_id
+            transaction.amount = amount
+            transaction.description = description
+            transaction.members_included = members_included
+
+            db.session.commit()
+            flash(f"Transaction was successfully updated!", category=SUCCESS)
+
+            return redirect(f"/see-transactions?groupID={ group.id }")
+
+        except Exception as e:
+            flash(str(e), category='error')
+
+        return redirect(f"edit-transaction?groupID={ group.id }&tranID={ transaction.id }")
+
+
 @views.route('delete-payment', methods=["GET"])
 @login_required
 def delete_payment():
@@ -215,6 +262,46 @@ def delete_payment():
     db.session.commit()
 
     return render_template('see_transactions.html', user=current_user, group=group)
+
+@views.route('edit-payment', methods=["GET", "POST"])
+@login_required
+def edit_payment():
+    if request.method == "GET":
+        payment_id = request.args['paymentID']
+        group_id = request.args['groupID']
+        group = Group.query.filter_by(id=group_id).first()
+        payment = Payment.query.filter_by(id=payment_id).first()
+
+        return render_template('edit_payment.html', user=current_user, group=group, payment=payment)
+
+    if request.method == "POST":
+        try:
+            group_id = request.form.get('group_id')
+            group = Group.query.filter_by(id=group_id).first()
+            payment_id = request.form.get('payment_id')
+            payment = Payment.query.filter_by(id=payment_id).first()
+
+            payer_id = request.form.get('payer_id')
+            recipient_id = request.form.get('recipient_id')
+            amount = request.form.get('amount')
+            description = request.form.get('description')
+            
+            Validation.add_payment(payer_id, amount, recipient_id, description)
+
+            payment.payer_id = payer_id
+            payment.amount = amount
+            payment.description = description
+            payment.recipient_id = recipient_id
+
+            db.session.commit()
+            flash(f"Payment was successfully updated!", category=SUCCESS)
+
+            return redirect(f"/see-transactions?groupID={ group.id }")
+
+        except Exception as e:
+            flash(str(e), category='error')
+
+        return redirect(f"edit-payment?groupID={ group.id }&paymentID={ payment.id }")
 
 @views.route('leave-group', methods=["GET"])
 @login_required
