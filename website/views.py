@@ -353,7 +353,7 @@ def delete_account():
     db.session.delete(user)
     db.session.commit()
 
-    return home()
+    return render_template("landing.html")
 
 @views.route('/base')
 def base():

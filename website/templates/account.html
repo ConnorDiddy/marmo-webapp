@@ -1,10 +1,12 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
 <br><h1 align="center">{{ user.username }}</h1><br>
 <div class="container" align="center">
-    <h5>Username : {{ user.username }} <a href="#">Edit</a></h5>
-    <h5>Email : {{ user.email }} <a href="#">Edit</a></h5>
-    <h5>id : {{ user.id }}</h5><br><br>
+    <h5>Username: {{ user.username }} <a href="#">Edit</a></h5>
+    <h5>Email: {{ user.email }} <a href="#">Edit</a></h5>
+    <h5>id: {{ user.id }}</h5><br><br>
 
-    <a class="btn btn-danger" href="delete-account?id={{ user.id }}" role="button">Delete Account</a>
+    <a class="btn btn-secondary" href="/logout" role="button">Log Out</a>
+    <a class="btn btn-danger" href="/delete-account?id={{ user.id }}" role="button"
+     onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</a>
 </div>
 {% endblock %}
