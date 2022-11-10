@@ -88,7 +88,7 @@ header img{
 }
 #hometext{
     color: #000;
-    max-width: 30rem;
+    max-width: 40rem;
     padding: 0 5rem;
 }
 #homebanner img{
@@ -108,12 +108,9 @@ header img{
 }
 
 #signin{
-    background-color: #fff;
-    border-style: solid;
     padding: 10px 20px;
     font-size: 1rem;
-    border-color: #6CBF49;
-    border-radius: 5px;
+    font-weight: 700;
     color: #000;
     text-decoration: none;
 }
@@ -228,8 +225,11 @@ footer p{
 
 
 @media only screen and (max-width: 768px){
+    h1{
+        font-size: 2rem;
+    }
     #wrapper{
-        grid-template-columns: minmax(0px, 1fr) repeat(8, minmax(0, 175px)) minmax(0px, 1fr);
+        grid-template-columns: minmax(0px, 1fr) repeat(6, minmax(0, 125px)) minmax(0px, 1fr);
     }
 
     *{
@@ -249,11 +249,12 @@ footer p{
         justify-content: center;
         align-items: center;
     }
+    #homebanner img{
+        padding: 2rem
+    }
     #hometext{
         padding-top: 2rem;
-    }
-    #homebanner img{
-        padding: 2rem;
+        max-width: 100%;
     }
     #bannerbar{
         height: 65rem
@@ -268,6 +269,9 @@ footer p{
  
     #signbuttons{
         margin: 1.5rem 0;
+    }
+    #examplescontainer{
+        padding: 0;
     }
     .example{
         padding: 0;
@@ -296,5 +300,18 @@ footer p{
         grid-template-columns: 200px 1fr;
         gap: 0.75rem;
         width: 100%;
+    }
+    .signup{
+        padding: 10px;
+    }
+    
+    #signin{
+        padding: 10px;
+    }
+}
+
+@media only screen and (max-width: 420px){
+    #homebanner img{
+        width: 20rem;
     }
 }
