@@ -44,7 +44,6 @@ p{
     grid-template-columns: minmax(0px, 1fr) repeat(8, minmax(0, 250px)) minmax(0px, 1fr);
 }
 header{
-    background-color: #fff;
     height: 100px;
     color: #fff;
     font-family: georgia, serif;
