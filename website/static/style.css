@@ -41,7 +41,7 @@ p{
     background-color: #fafafa;
     display: grid;
     grid-auto-rows: minmax(0px, auto);
-    grid-template-columns: minmax(0px, 1fr) repeat(6, minmax(0, 250px)) minmax(0px, 1fr);
+    grid-template-columns: minmax(0px, 1fr) repeat(8, minmax(0, 250px)) minmax(0px, 1fr);
 }
 header{
     background-color: #fff;
@@ -49,7 +49,7 @@ header{
     color: #fff;
     font-family: georgia, serif;
     grid-row: 1 / 2;
-    grid-column: 2 / -2;
+    grid-column: 3 / -3;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,7 +75,7 @@ header img{
 
 #bannerbar{
     background-color: #d4d4d4;
-    grid-column: 1 / -1;
+    grid-column: 2 / -2;
     grid-row: 2 / 3;
     height: 40rem;
 }
@@ -84,7 +84,7 @@ header img{
     grid-column: 2 / -2;
     grid-row: 2 / 3;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     height: 40rem;
 }
 #hometext{
@@ -168,18 +168,26 @@ dt{
 .example h3{
     margin: 1rem 0;
 }
+form{
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 200px 1fr;
+    gap: 0.75rem;
+    width: 100%;
+}
 #features{
-    grid-column: 2 / -2;
-    background: #d4d4d4;
+    grid-column: 3 / -3;
     padding-top: 2rem;
 }
+
 #record{
     display: flex;
-    justify-content: space-around;
+    justify-content:space-around;
     align-items: center;
 }
+
 #recordtext{
-    width: 300px;
+    width: 350px;
 }
 #spending{
     display: flex;
@@ -187,7 +195,8 @@ dt{
     align-items: center;
 }
 #spendingtext{
-    width: 300px;
+    width: 350px;
+    text-align: right;
 }
 .shrinkimg{
     width: 100%;
@@ -197,17 +206,9 @@ dt{
 }
 footer{
     font-style: italic;
-    text-align: center;
     padding: 1rem;
     grid-column: 2 / -2;
-    grid-row: 10;
-    height: 150px;
-    background-color: #d4d4d4;
-}
-footer{
-    grid-column: 2 / -2;
-    grid-row: 11 / 12;
-    background-color: #d4d4d4;
+    grid-row: 6 / 7;
     text-align: center;
     height: 85px;
     margin-top: 1rem;
@@ -219,7 +220,7 @@ footer{
 #footerbar{
     background-color: #d4d4d4;
     grid-column: 1 / -1;
-    grid-row: 11 / 12;
+    grid-row: 6 / 7;
 }
 footer p{
     color: #666666;
@@ -232,6 +233,8 @@ footer p{
     *{
         text-align: center;
         align-items: center;
+        margin: 0;
+        padding: 0;
     }
     #links a{
         display: none;
@@ -260,13 +263,6 @@ footer p{
         height: 10rem;
         justify-content: flex-end;
     }
-    form{
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 200px 1fr;
-        gap: 0.75rem;
-        width: 100%;
-    }
  
     #signbuttons{
         margin: 1.5rem 0;
@@ -274,9 +270,13 @@ footer p{
     .example{
         padding: 0;
     }
+    .example img{
+            padding: 3rem 0 0 0;
+    }
     #features{
         grid-column: 2 / -2;
     }
+
     #record{
         flex-flow: column;
         margin: 5rem 0;
@@ -287,5 +287,12 @@ footer p{
     #spending{
         flex-flow: column-reverse;
         margin: 5rem 0;
+    }
+    form{
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 200px 1fr;
+        gap: 0.75rem;
+        width: 100%;
     }
 }

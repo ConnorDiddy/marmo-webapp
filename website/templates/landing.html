@@ -1,139 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Marmo</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow" />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Karla:ital@0;1&family=Open+Sans:wght@800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="{{ url_for('static', filename='images/favicon.png') }}"
-    />
-  </head>
-  <div id="wrapper">
+  <html lang="en">
+    <head>
+      <title>Marmo</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+      <meta name="robots" content="noindex, nofollow" />
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet"/>
+    </head>
+      
+    <div id="wrapper">
     <div id="headerbar"></div>
-    <header>
-      <a href="/"
-        ><img src="{{ url_for('static', filename='images/logo3small.png') }}"
-      /></a>
-      <div style="margin-right: 5rem; position: sticky">
-        <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
-        <a href="/login" id="signin">Log In</a>
-      </div>
-    </header>
-
-    <body>
-      <div id="bannerbar"></div>
-      <div id="homebanner">
-        <div id="hometext">
-          <h1>Reimbursements, reimagined.</h1>
-          <br />
-          <h2>
-            We make expense sharing <strong>stress-free.</strong> Split costs
-            between groups and track spending easier than ever before.<br /><br />Best
-            part? It's FREE. No cap.
-          </h2>
-          <br /><br />
-          <a href="signup.html" class="buttonClass">Sign Up</a>
+      
+      <header>
+        <div>
+          <a href="index.html"><img src="{{ url_for('static', filename='images/logo3small.png') }}" /></a>
         </div>
-
-        <img src="{{ url_for('static', filename='images/PhoneMockup.png') }}" />
-      </div>
-
-      <div class="homecontainer">
-        <h1 class="light">Just <span class="bold">marmo</span> it.</h1>
-      </div>
-
-      <div id="examplescontainer">
-        <div class="example">
-          <img
-            src="{{ url_for('static', filename='images/housemates.png') }}"
-          />
-          <h3>Housemates</h3>
-          <p>
-            No more awkward conversations or time wasted figuring out how to
-            split rent, utilities, and groceries between housemates.
-          </p>
+        <div id="signbuttons">
+          <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
+          <a href="/login" id="signin">Log In</a>
         </div>
-
-        <div class="example">
-          <img src="{{ url_for('static', filename='images/trips.png') }}" />
-          <h3>Trips</h3>
-          <p>
-            Trips are full of group expenses like hotels, travel, food, and
-            excursions. Marmo takes care of all that so you can enjoy your
-            vacation.
-          </p>
+      </header>
+  
+      <body>
+        <div id="bannerbar"></div>
+        <div id="homebanner">
+          <div id="hometext">
+            <h1>Reimbursements, reimagined.</h1>
+            <br />
+            <h2>
+              We make expense sharing <strong>stress-free.</strong> Split costs
+              between groups and track spending easier than ever before.<br /><br />Best
+              part? It's FREE. No cap.
+            </h2>
+            <br /><br />
+            <a href="signup.html" class="buttonClass">Sign Up</a>
+          </div>
+  
+          <img src="{{ url_for('static', filename='images/PhoneMockup.png') }}" />
         </div>
-
-        <div class="example">
-          <img src="{{ url_for('static', filename='images/dinner.png') }}" />
-          <h3>Dinners</h3>
-          <p>
-            Relax and enjoy a meal with friends without worrying about how to
-            split the check. Your server will love you for it.
-          </p>
+  
+        <div class="homecontainer">
+          <h1 class="light">Just <span class="bold">marmo</span> it.</h1>
         </div>
-      </div>
-
-      <div id="features">
-        <div class="homecontainer" id="howitworks">
-          <h1>How It Works</h1>
-        </div>
-        <div id="record">
-          <div id="recordtext">
-            <h3>Record Transactions</h3>
+  
+        <div id="examplescontainer">
+          <div class="example">
+            <img src="{{ url_for('static', filename='images/housemates.png') }}" />
+            <h3>Housemates</h3>
             <p>
-              Simply enter your transaction details or scan a receipt.<br /><br />All
-              members of your group can see the expense and settle up. Choose
-              between our presets or customize how the bill is split.<br /><br />Other
-              members can add transactions and we’ll take care of the math to
-              figure out who owes who.
+              No more awkward conversations or time wasted figuring out how to
+              split rent, utilities, and groceries between housemates.
             </p>
           </div>
-          <div class="imgbox">
-            <img
-              src="{{ url_for('static', filename='images/record.png') }}"
-              class="shrinkimg"
-            />
-          </div>
-        </div>
-
-        <div id="spending">
-          <div class="imgbox">
-            <img
-              src="{{ url_for('static', filename='images/spending.png') }}"
-              class="shrinkimg"
-            />
-          </div>
-          <div id="spendingtext">
-            <h3>Track Spending</h3>
+  
+          <div class="example">
+            <img src="{{ url_for('static', filename='images/trips.png') }}" />
+            <h3>Trips</h3>
             <p>
-              Each transaction is categorized so you can keep track of your
-              spending habits.<br /><br />Want to know how much that road trip
-              was? How much you spent on groceries last month? <br /><br />We
-              keep track of your transactions and present it in a useful way.
+              Trips are full of group expenses like hotels, travel, food, and
+              excursions. Marmo takes care of all that so you can enjoy your
+              vacation.
+            </p>
+          </div>
+  
+          <div class="example">
+            <img src="{{ url_for('static', filename='images/dinner.png') }}" />
+            <h3>Dinners</h3>
+            <p>
+              Relax and enjoy a meal with friends without worrying about how to
+              split the check. Your server will love you for it.
             </p>
           </div>
         </div>
-
-        <div id="footerbar"></div>
-        <footer>
-          <p>Copyright &copy; 2022 Marmo Expense Sharing</p>
-          <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
-        </footer>
-      </div>
-    </body>
-  </div>
-</html>
+  
+        <div id="features">
+          <div class="homecontainer" id="howitworks">
+            <h1>How It Works</h1>
+          </div>
+          <div id="record">
+            <div id="recordtext">
+              <h3>Record Transactions</h3>
+              <p>
+                Simply enter your transaction details or scan a receipt.<br /><br />All
+                members of your group can see the expense and settle up. Choose
+                between our presets or customize how the bill is split.<br /><br />Other
+                members can add transactions and we’ll take care of the math to
+                figure out who owes who.
+              </p>
+            </div>
+            <div class="imgbox">
+              <img src="{{ url_for('static', filename='images/record.png') }}" class="shrinkimg" />
+            </div>
+          </div>
+  
+          <div id="spending">
+            <div class="imgbox">
+              <img src="{{ url_for('static', filename='images/spending.png') }}" class="shrinkimg" />
+            </div>
+            <div id="spendingtext">
+              <h3>Track Spending</h3>
+              <p>
+                Each transaction is categorized so you can keep track of your
+                spending habits.<br /><br />Want to know how much that road trip
+                was? How much you spent on groceries last month? <br /><br />We
+                keep track of your transactions and present it in a useful way.
+              </p>
+            </div>
+          </div>
+        </div>
+          <div id="footerbar"></div>
+          <footer>
+            <p>Copyright &copy; 2022 Marmo Expense Sharing</p>
+            <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
+          </footer>
+        </div>
+      </body>
+    </div>
+  </html>
+  
