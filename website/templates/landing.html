@@ -1,39 +1,53 @@
-{% extends "base2.html" %} {% block title %}Marmo{% endblock %} {% block content %}
-<header>
-  <a href="/"><img src="{{ url_for('static', filename='images/logo3small.png') }}" /></a>
-  <div style="margin-right: 5rem; position: sticky">
-    <a class="signup" href="/test">Test it out</a> &nbsp;
-    <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
-    <a href="/login" id="signin">Log In</a>
-  </div>
-</header>
-
-<body>
-  <div id="pagecontainer">
-    <div id="banner">
-      <div id="hometext">
-        <h1>Reimbursements, reimagined.</h1>
-        <h2>
-          We make expense sharing <strong>stress-free.</strong> Split costs
-          between groups and track spending easier than ever before.<br /><br />Best
-          part? It's FREE. No monthly fee, no paid version, no catch.
-        </h2>
-        <br /><br /><a href="/sign-up" class="buttonClass">Sign Up</a>
-      </div>
-      <div id="homehero"></div>
-    </div>
+{% extends "base2.html" %} {% block title %}Home{% endblock %} {% block content %}
+      
     <div id="wrapper">
-      <main>
-        <h1 style="text-align: center"><b>Just</b> marmo<b> it.</b></h1>
-        <div id="howitworks">
-          <div id="groupexample1">
+    <div id="headerbar"></div>
+      
+      <header>
+        <div>
+          <a href="/"><img src="{{ url_for('static', filename='images/logo3small.png') }}" /></a>
+        </div>
+        <div id="signbuttons">
+          <a class="signup" href="/test">Try it out</a> &nbsp;
+          <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
+          <a href="/login" id="signin">Log In</a>
+        </div>
+      </header>
+  
+      <body>
+        <div id="bannerbar"></div>
+        <div id="homebanner">
+          <div id="hometext">
+            <h1>Reimbursements, reimagined.</h1>
+            <br />
+            <h2>
+              We make expense sharing <strong>stress-free.</strong> Split costs
+              between groups and track spending easier than ever before.<br /><br />Best
+              part? It's FREE. No catch.
+            </h2>
+            <br /><br />
+            <a href="/sign-up" class="buttonClass">Sign Up</a>
+          </div>
+  
+          <img src="{{ url_for('static', filename='images/PhoneMockup.png') }}" />
+        </div>
+  
+        <div class="homecontainer">
+          <h1 class="light">Just <span class="bold">marmo</span> it.</h1>
+        </div>
+  
+        <div id="examplescontainer">
+          <div class="example">
+            <img src="{{ url_for('static', filename='images/housemates.png') }}" />
             <h3>Housemates</h3>
             <p>
               No more awkward conversations or time wasted figuring out how to
               split rent, utilities, and groceries between housemates.
             </p>
           </div>
-          <div id="groupexample2">
+  
+          <div class="example">
+            <img src="{{ url_for('static', filename='images/trips.png') }}" />
             <h3>Trips</h3>
             <p>
               Trips are full of group expenses like hotels, travel, food, and
@@ -41,12 +55,20 @@
               vacation.
             </p>
           </div>
-          <div id="groupexample3">
+  
+          <div class="example">
+            <img src="{{ url_for('static', filename='images/dinner.png') }}" />
             <h3>Dinners</h3>
             <p>
-              Relax and enjoy a meal with friends without worrying about how
-              to split the check. Your server will love you for it.
+              Relax and enjoy a meal with friends without worrying about how to
+              split the check. Your server will love you for it.
             </p>
+          </div>
+        </div>
+  
+        <div id="features">
+          <div class="homecontainer" id="howitworks">
+            <h1>How It Works</h1>
           </div>
           <div id="record">
             <div id="recordtext">
@@ -87,5 +109,4 @@
         </div>
       </body>
     </div>
-  </html>
-  
+{% endblock %}
