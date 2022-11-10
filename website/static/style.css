@@ -229,6 +229,9 @@ footer p{
 
 
 @media only screen and (max-width: 768px){
+    #wrapper{
+        grid-template-columns: minmax(0px, 1fr) repeat(8, minmax(0, 175px)) minmax(0px, 1fr);
+    }
 
     *{
         text-align: center;
