@@ -48,25 +48,44 @@
               to split the check. Your server will love you for it.
             </p>
           </div>
-        </div>
-        <div id="features">
           <div id="record">
-            <h3>Record Transactions</h3>
-            <p>
-              Simply enter your transaction details or scan a receipt.<br />All
-              members of your group can see the expense and settle up. Choose
-              between our presets or customize how the bill is split.<br />Other
-              members can add transactions and we’ll take care of the math to
-              figure out who owes who.
-            </p>
+            <div id="recordtext">
+              <h3>Record Transactions</h3>
+              <p>
+                Simply enter your transaction details or scan a receipt.<br /><br />All
+                members of your group can see the expense and settle up. Choose
+                between our presets or customize how the bill is split.<br /><br />Other
+                members can add transactions and we’ll take care of the math to
+                figure out who owes who.
+              </p>
+            </div>
+            <div class="imgbox">
+              <img src="{{ url_for('static', filename='images/record.png') }}" class="shrinkimg" />
+            </div>
+          </div>
+  
+          <div id="spending">
+            <div class="imgbox">
+              <img src="{{ url_for('static', filename='images/spending.png') }}" class="shrinkimg" />
+            </div>
+            <div id="spendingtext">
+              <h3>Track Spending</h3>
+              <p>
+                Each transaction is categorized so you can keep track of your
+                spending habits.<br /><br />Want to know how much that road trip
+                was? How much you spent on groceries last month? <br /><br />We
+                keep track of your transactions and present it in a useful way.
+              </p>
+            </div>
           </div>
         </div>
-      </main>
+          <div id="footerbar"></div>
+          <footer>
+            <p>Copyright &copy; 2022 Marmo Expense Sharing</p>
+            <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
+          </footer>
+        </div>
+      </body>
     </div>
-    <footer>
-      Copyright &copy; 2022 Marmo Expense Sharing<br />
-      <a href="mailto:carsondidericksen@gmail.com">support@marmo.app</a>
-    </footer>
-  </div>
-</body>
-{% endblock %}
+  </html>
+  
