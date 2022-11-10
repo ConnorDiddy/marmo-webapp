@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <title>Marmo</title>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
-      <meta name="robots" content="noindex, nofollow" />
-      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet"/>
-    </head>
+{% extends "base2.html" %} {% block title %}Home{% endblock %} {% block content %}
       
     <div id="wrapper">
     <div id="headerbar"></div>
       
       <header>
         <div>
-          <a href="index.html"><img src="{{ url_for('static', filename='images/logo3small.png') }}" /></a>
+          <a href="/"><img src="{{ url_for('static', filename='images/logo3small.png') }}" /></a>
         </div>
         <div id="signbuttons">
           <a class="signup" href="/sign-up">Sign Up</a> &nbsp;
@@ -37,7 +25,7 @@
               part? It's FREE. No catch.
             </h2>
             <br /><br />
-            <a href="signup.html" class="buttonClass">Sign Up</a>
+            <a href="/sign-up" class="buttonClass">Sign Up</a>
           </div>
   
           <img src="{{ url_for('static', filename='images/PhoneMockup.png') }}" />
@@ -120,5 +108,4 @@
         </div>
       </body>
     </div>
-  </html>
-  
+{% endblock %}

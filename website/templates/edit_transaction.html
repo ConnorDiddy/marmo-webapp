@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
+<br><h3 align="center">Edit transaction in <span style="color: red;">{{ group.group_name }}</span></h3>
+
+    <form method="post" action="/edit-transaction" align="center">
+
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" value="{{transaction.description}}"><br><br>
+        <label for="amount">Amount:</label><br>
+        <input type="number" id="amount" name="amount" step="0.01" value="{{transaction.amount}}"><br><br>
+        <input type="hidden" id="group_id" name="group_id" value="{{ group.id }}">
+        <input type="hidden" id="transaction_id" name="transaction_id" value="{{ transaction.id }}">
+
+        <span class="input-group-addon">Who paid?</span>
+        <select name="payer_id" class="selectpicker form-control">
+            {% for member in group.members %}
+            {% if member.id == transaction.payer_id %}
+            <option value="{{ member.id }}">{{ member.username }}</option>
+            {% endif %}
+            {% endfor %}
+
+            {% for member in group.members %}
+            {% if member.id != transaction.payer_id %}
+            <option value="{{ member.id }}">{{ member.username }}</option>
+            {% endif %}
+            {% endfor %}
+        </select><br>
+
+        <span class="input-group-addon">Split between:</span><br>
+        <div class="form-check form-check-inline">
+            {% for member in group.members %}
+            <div class="form-check form-check-inline">
+                {% if member in transaction.members_included %}
+                <input class="form-check-input" type="checkbox" id="{{ member.id }}" value="{{ member.id }}" name="member_included" checked>
+                <label class="form-check-label" for="{{ member.id }}">
+                    {{ member.username }}{% if member.id == user.id %} (me){% endif %}
+                </label>
+                {% endif %}
+
+                {% if member not in transaction.members_included %}
+                <input class="form-check-input" type="checkbox" id="{{ member.id }}" value="{{ member.id }}" name="member_included">
+                <label class="form-check-label" for="{{ member.id }}">
+                    {{ member.username }}{% if member.id == user.id %} (me){% endif %}
+                </label>
+                {% endif %}
+            </div><br><br><br>
+            {% endfor %}
+        </div>
+
+        <br><a class="btn btn-secondary" href="/see-transactions?groupID={{ group.id }}" role="button">Back</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form><br>
+{% endblock %}

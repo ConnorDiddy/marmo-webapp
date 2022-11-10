@@ -7,8 +7,20 @@
 <div class="container" align="left" padding="1rem">
     <h2>My groups:</h2>
     {% for group in user.groups %}
-    <span><h5><a href="mygroup?groupID={{ group.id }}">{{ group.group_name }}</a></h5>
-    
+    <span>
+        <h5><a href="mygroup?groupID={{ group.id }}">{{ group.group_name }}</a></h5>
+    </span>
+    <h6>
+        {% if group.calculate_debts(user)[1] == 0 %}
+        You are all settled up!
+        {% endif %}
+        {% if group.calculate_debts(user)[1] == 1 %}
+        You are owed <span style="color:rgb(0, 197, 0);">${{ group.calculate_debts(user)[0] }}.</span>
+        {% endif %}
+        {% if group.calculate_debts(user)[1] == -1 %}
+        You owe <span style="color:red">${{ group.calculate_debts(user)[0] }}.</span>
+        {% endif %}
+    </h6>
     {% endfor %}
 </div>
 
