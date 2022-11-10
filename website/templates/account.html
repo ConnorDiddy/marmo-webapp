@@ -7,6 +7,6 @@
 
     <a class="btn btn-secondary" href="/logout" role="button">Log Out</a>
     <a class="btn btn-danger" href="/delete-account?id={{ user.id }}" role="button"
-     onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</a>
+     onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete Account</a>
 </div>
 {% endblock %}

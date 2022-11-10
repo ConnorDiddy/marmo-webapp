@@ -355,10 +355,6 @@ def delete_account():
 
     return render_template("landing.html")
 
-@views.route('/base')
-def base():
-    return "The base page for users not logged in. <a href='login'>Log in</a>"
-
 @views.route('style.css')
 def stylesheet():
     return "templates/style.css"
