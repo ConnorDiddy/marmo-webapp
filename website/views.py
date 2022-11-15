@@ -361,7 +361,7 @@ def stylesheet():
 
 @views.route('/test', methods=['GET', 'POST'])
 def login():
-    email = 'Johndoe@mail.com'
+    email = 'johndoe@mail.com'
 
     user = User.query.filter_by(email=email).first()
     flash('Logged in successfully!', category='success')
