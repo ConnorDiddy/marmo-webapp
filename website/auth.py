@@ -11,6 +11,7 @@ auth = Blueprint('auth', __name__)
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
+        email = email.lower()
         password = request.form.get('password')
 
         user = User.query.filter_by(email=email).first()
@@ -38,6 +39,7 @@ def logout():
 def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
+        email = email.lower()
         first_name = request.form.get('firstname')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')

@@ -107,12 +107,21 @@ header img{
     text-decoration: none;
 }
 
+.signup:hover{
+    text-decoration: none;
+    color: #fff;
+}
+
 #signin{
     padding: 10px 20px;
     font-size: 1rem;
     font-weight: 700;
     color: #000;
     text-decoration: none;
+}
+
+#signin:hover{
+    color: hsla(0, 0%, 0%, 0.603);
 }
 
 .buttonClass{
