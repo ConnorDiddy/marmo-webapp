@@ -1,27 +1,52 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<h1 align="center">Welcome to marmo.</h1><br>
-<div class="container" align="center">
-    <a class="btn btn-primary" href="create-group" role="button" align="center">Create Group</a>
-    <a class="btn btn-primary" href="join-group" role="button">Join Group</a><br><br>
-</div>
-<div class="container" align="left" padding="1rem">
-    <h2>My groups:</h2>
-    {% for group in user.groups %}
-    <span>
-        <h5><a href="mygroup?groupID={{ group.id }}">{{ group.group_name }}</a></h5>
-    </span>
-    <h6>
-        {% if group.calculate_debts(user)[1] == 0 %}
-        You are all settled up!
-        {% endif %}
-        {% if group.calculate_debts(user)[1] == 1 %}
-        You are owed <span style="color:rgb(0, 197, 0);">${{ group.calculate_debts(user)[0] }}.</span>
-        {% endif %}
-        {% if group.calculate_debts(user)[1] == -1 %}
-        You owe <span style="color:red">${{ group.calculate_debts(user)[0] }}.</span>
-        {% endif %}
-    </h6>
-    {% endfor %}
-</div>
-
+{% extends "webflow_base.html" %}{% block title %}Home{% endblock %}{% block content %}
+<body class="body">
+    <div class="iphone">
+        <div class="balance-section wf-section">
+            <div class="header">Your Balance:</div>
+            <div class="balance-text">
+                <h1 class="large-green">
+                    {% if user.calculate_balance() < 0 %}
+                    <span style="color: red;">${{ user.calculate_balance()}}</span>
+                    {% else %}
+                    ${{ user.calculate_balance()}}
+                    {% endif %}
+                </h1>
+                <a href="#" class="arrow-link w-inline-block"><img
+                        src="{{ url_for('static', filename='images/right-arrow.png') }}" loading="lazy" alt=""
+                        class="image"></a>
+            </div>
+            <div class="subtitle">
+                {% if user.calculate_balance() == 0 %}
+                    You&#x27;re all paid up. Great Job!
+                {% endif %}
+            </div>
+        </div>
+        <div class="group-section wf-section">
+            <div class="left-right-block">
+                <div class="header green">My Groups</div>
+                <a href="create-group" class="plus-button w-inline-block"><img
+                        src="{{ url_for('static', filename='images/add-group.png') }}" loading="lazy" alt=""
+                        class="image-2"></a>
+            </div>
+            {% for group in user.groups %}
+            <div class="left-right-block">
+                <a href="mygroup?groupID={{ group.id }}" class="group-link w-inline-block">
+                    <div class="header bold">{{group.group_name}}</div>
+                </a>
+                <div class="header balance">
+                    {% if group.calculate_debts(user)[1] == 0 %}
+                    <span class=green>You are all settled up!</span>
+                    {% endif %}
+                    {% if group.calculate_debts(user)[1] == 1 %}
+                    You are owed <span class="green">${{ group.calculate_debts(user)[0] }}.</span>
+                    {% endif %}
+                    {% if group.calculate_debts(user)[1] == -1 %}
+                    You owe <span style="color:red">${{ group.calculate_debts(user)[0] }}.</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
 {% endblock %}

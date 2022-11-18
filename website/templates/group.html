@@ -1,34 +1,51 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<div class="container" align="center">
-  <br><h1 align="center"><span style="color: red;">{{ group.group_name }}</span></h1>
-  <h4>Group id: {{ group.id }}</h4><br>
-  <h4>Members:</h4>
-  {% for member in group.members %}
-    {% if member.id == group.admin_id %}
-      <h5>{{ member.username }} (admin)</h5>
-    {% else %}
-      <h5>{{ member.username }}</h5>
-    {% endif %}
-  {% endfor %}<br>
-  <h4>Balances:</h4>
-  {% for member in group.members %}
-    {% if group.calculate_debts(member)[1] == 0 %}
-      <h6>{{member.username}} is <span style="color: rgb(0, 197, 0);">all settled up!</span></h6>
-    {% endif %}
-    {% if group.calculate_debts(member)[1] == 1 %}
-      <h6>{{member.username}}: <span style="color: rgb(0, 197, 0);">+ ${{ group.calculate_debts(member)[0] }}</span></h6>
-    {% endif %}
-    {% if group.calculate_debts(member)[1] == -1 %}
-      <h6>{{member.username}}: <span style="color: red;">- ${{ group.calculate_debts(member)[0] }}</span></h6>
-    {% endif %}
-  {% endfor %}<br>
-  <a class="btn btn-secondary" href="/" role="button">Back</a>
-  <a class="btn btn-primary" href="/add-transaction?groupID={{ group.id }}" role="button">Add transaction</a>
-  <a class="btn btn-primary" href="/add-payment?groupID={{ group.id }}" role="button">Add payment</a><br><br>
-  <a class="btn btn-secondary btn-sm" href="/see-transactions?groupID={{ group.id }}" role="button">Group History</a>
-  <a class="btn btn-danger btn-sm" href="/leave-group?memberID={{ user.id }}&groupID={{ group.id }}" role="button">Leave group</a>
-  {% if group.admin_id == user.id %}
-  <a class="btn btn-danger btn-sm" href="/delete-group?memberID={{ user.id }}&groupID={{ group.id }}" role="button">Delete group</a>
-  {% endif %}
-</div>
+{% extends "webflow_base.html" %}{% block title %}Group{% endblock %}{% block content %}
+<body class="body">
+  <div class="iphone">
+    <div class="nav-bar wf-section">
+      <a href="/" class="nav-image w-inline-block"><img src="{{ url_for('static', filename='images/back-arrow.png') }}" loading="lazy" alt=""></a>
+      <div class="header page-title">{{ group.group_name }}</div>
+      <a href="#" class="nav-image info-button w-inline-block"><img src="{{ url_for('static', filename='images/info-icon.png') }}" loading="lazy" alt=""></a>
+    </div>
+    <div class="balance-section wf-section">
+      <div class="header">Your Balance:</div>
+      <div class="balance-text">
+        <h1 class="large-green">${{ group.calculate_debts(user)[0] }}</h1>
+      </div>
+      <div class="subtitle">
+        {% if group.calculate_debts(user)[0] == 0 %}
+          You&#x27;re all paid up. Great Job!</div>
+        {% endif %}
+    </div>
+    <div class="addtransaction-section wf-section">
+      <a href="/add-transaction?groupID={{ group.id }}" class="button w-button">Add Transaction</a>
+      <a href="/add-payment?groupID={{ group.id }}" class="button w-button">Record Payment</a>
+    </div>
+    <div class="members-section wf-section">
+      <div class="left-right-block">
+        <div class="header green">Members</div>
+        <a href="/see-transactions?groupID={{ group.id }}" class="text-link-block w-inline-block">
+          <div class="text-block">View Transactions</div>
+        </a>
+      </div>
+      {% for member in group.members %}
+      <div class="left-right-block">
+        <a href="#" class="group-link w-inline-block">
+          <div class="header bold">{{ member.username }}</div>
+        </a>
+        <div class="header balance">
+          {% if group.calculate_debts(member, convert_to_string=False) == 0 %}
+          <span class="green">All settled up!</span>
+          {% endif %}
+          {% if group.calculate_debts(member, convert_to_string=False) > 0 %}
+          $<span class="green">{{ group.calculate_debts(member, convert_to_string=False) }}</span>
+          {% endif %}
+          {% if group.calculate_debts(member, convert_to_string=False) < 0 %}
+          $<span style="color: red;">{{ group.calculate_debts(member, convert_to_string=False) }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
 {% endblock %}

@@ -25,6 +25,13 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f'{self.username}'
 
+    def calculate_balance(self):
+        balance = 0
+        for group in self.groups:
+            group_balance = group.calculate_debts(member=self, convert_to_string=False)
+            balance += group_balance
+        return balance
+
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     admin_id = db.Column(db.Integer)
@@ -50,7 +57,7 @@ class Group(db.Model):
         for transaction in group_id.transactions:
             print(transaction)
 
-    def calculate_debts(self, member):
+    def calculate_debts(self, member, convert_to_string=True):
         
         total_paid = 0
         total_borrowed = 0
@@ -76,15 +83,18 @@ class Group(db.Model):
         # round to nearest cent
         overall = round(overall, 2)
 
-        return_list = [overall]
-        if overall == 0:
-            return_list.append(0)
-        elif overall < 0:
-            return_list.append(-1)
-        elif overall > 0:
-            return_list.append(1)
-        return_list[0] = "{:,.2f}".format(abs(overall))
-        return return_list
+        if convert_to_string:
+            return_list = [overall]
+            if overall == 0:
+                return_list.append(0)
+            elif overall < 0:
+                return_list.append(-1)
+            elif overall > 0:
+                return_list.append(1)
+            return_list[0] = "{:,.2f}".format(abs(overall))
+            return return_list
+        else:
+            return overall
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
