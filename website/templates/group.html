@@ -13,8 +13,9 @@
       </div>
       <div class="subtitle">
         {% if group.calculate_debts(user)[0] == 0 %}
-          You&#x27;re all paid up. Great Job!</div>
+          You're all paid up. Great Job!
         {% endif %}
+      </div>
     </div>
     <div class="addtransaction-section wf-section">
       <a href="/add-transaction?groupID={{ group.id }}" class="button w-button">Add Transaction</a>
@@ -46,6 +47,5 @@
       </div>
       {% endfor %}
     </div>
-  </div>
 </body>
 {% endblock %}
