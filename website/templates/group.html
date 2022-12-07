@@ -1,10 +1,12 @@
-{% extends "webflow_base.html" %}{% block title %}Group{% endblock %}{% block content %}
-<body class="body">
-  <div class="iphone">
+{% extends "webflow_base.html" %}{% block title %}Group{% endblock %}
+
+    {% block content %}
     <div class="nav-bar wf-section">
-      <a href="/" class="nav-image w-inline-block"><img src="{{ url_for('static', filename='images/back-arrow.png') }}" loading="lazy" alt=""></a>
+      <a href="/" class="nav-image w-inline-block"><img src="{{ url_for('static', filename='images/back-arrow.png') }}"
+          loading="lazy" alt=""></a>
       <div class="header page-title">{{ group.group_name }}</div>
-      <a href="#" class="nav-image info-button w-inline-block"><img src="{{ url_for('static', filename='images/info-icon.png') }}" loading="lazy" alt=""></a>
+      <a href="#" class="nav-image info-button w-inline-block"><img
+          src="{{ url_for('static', filename='images/info-icon.png') }}" loading="lazy" alt=""></a>
     </div>
     <div class="balance-section wf-section">
       <div class="header">Your Balance:</div>
@@ -13,8 +15,9 @@
       </div>
       <div class="subtitle">
         {% if group.calculate_debts(user)[0] == 0 %}
-          You&#x27;re all paid up. Great Job!</div>
+        You&#x27;re all paid up. Great Job!
         {% endif %}
+      </div>
     </div>
     <div class="addtransaction-section wf-section">
       <a href="/add-transaction?groupID={{ group.id }}" class="button w-button">Add Transaction</a>
@@ -39,13 +42,11 @@
           {% if group.calculate_debts(member, convert_to_string=False) > 0 %}
           $<span class="green">{{ group.calculate_debts(member, convert_to_string=False) }}</span>
           {% endif %}
-          {% if group.calculate_debts(member, convert_to_string=False) < 0 %}
-          $<span style="color: red;">{{ group.calculate_debts(member, convert_to_string=False) }}</span>
-          {% endif %}
+          {% if group.calculate_debts(member, convert_to_string=False) < 0 %} $<span style="color: red;">{{
+            group.calculate_debts(member, convert_to_string=False) }}</span>
+            {% endif %}
         </div>
       </div>
       {% endfor %}
     </div>
-  </div>
-</body>
-{% endblock %}
+    {% endblock %}
