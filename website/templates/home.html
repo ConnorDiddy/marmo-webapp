@@ -4,14 +4,11 @@
             <div class="balance-text">
                 <h1 class="large-green">
                     {% if user.calculate_balance() < 0 %}
-                    <span style="color: red;">${{ user.calculate_balance()}}</span>
+                    <span style="color: red;">$ {{ user.calculate_balance()}}</span>
                     {% else %}
-                    ${{ user.calculate_balance()}}
+                    $ {{ user.calculate_balance()}}
                     {% endif %}
                 </h1>
-                <a href="#" class="arrow-link w-inline-block"><img
-                        src="{{ url_for('static', filename='images/right-arrow.png') }}" loading="lazy" alt=""
-                        class="image"></a>
             </div>
             <div class="subtitle">
                 {% if user.calculate_balance() == 0 %}

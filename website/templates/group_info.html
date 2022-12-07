@@ -1,0 +1,24 @@
+{% extends "webflow_base.html" %}{% block title %}Group{% endblock %}
+
+    {% block content %}
+    <div class="nav-bar wf-section">
+      <a href="/" class="nav-image w-inline-block"><img src="{{ url_for('static', filename='images/back-arrow.png') }}"
+          loading="lazy" alt=""></a>
+      <div class="header page-title">{{ group.group_name }}</div>
+      <a href="#" class="nav-image info-button w-inline-block"><img
+          src="{{ url_for('static', filename='images/info-icon.png') }}" loading="lazy" alt=""></a>
+    </div>
+    <div class="balance-section wf-section">
+      <div class="header">Group ID:</div>
+      <div class="balance-text">
+        <h1 class="large-green">{{ group.id }}</h1>
+      </div>
+      <div class="subtitle">
+        Give this code to others who wish to join the group.
+      </div>
+    </div>
+    <div class="addtransaction-section wf-section">
+      <a href="/leave-group?memberID={{ user.id }}&groupID={{ group.id }}" class="button w-button" style="background-color: rgb(131, 131, 131);">Leave Group</a>
+      <a href="/delete-group?memberID={{ user.id }}&groupID={{ group.id }}" class="button w-button" style="background-color: rgb(255, 52, 52);">Delete Group</a>
+    </div>
+    {% endblock %}

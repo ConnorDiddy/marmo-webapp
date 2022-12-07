@@ -185,6 +185,14 @@ def show_group():
 
         return render_template("group.html", user=current_user, group=group)
 
+@views.route('group-info', methods=["GET"])
+def show_group_info():
+    if request.method == "GET":
+        group_id = request.args['groupID']
+        group = Group.query.filter_by(id=group_id).first()
+
+        return render_template("group_info.html", user=current_user, group=group)
+
 @views.route('see-transactions', methods=["GET"])
 def show_transactions():
     group_id = request.args['groupID']
@@ -368,3 +376,4 @@ def login():
     login_user(user, remember=True)
 
     return redirect(url_for('views.home'))
+

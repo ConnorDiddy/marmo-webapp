@@ -5,7 +5,7 @@
       <a href="/" class="nav-image w-inline-block"><img src="{{ url_for('static', filename='images/back-arrow.png') }}"
           loading="lazy" alt=""></a>
       <div class="header page-title">{{ group.group_name }}</div>
-      <a href="#" class="nav-image info-button w-inline-block"><img
+      <a href="group-info?groupID={{ group.id }}" class="nav-image info-button w-inline-block"><img
           src="{{ url_for('static', filename='images/info-icon.png') }}" loading="lazy" alt=""></a>
     </div>
     <div class="balance-section wf-section">
@@ -33,7 +33,10 @@
       {% for member in group.members %}
       <div class="left-right-block">
         <a href="#" class="group-link w-inline-block">
-          <div class="header bold">{{ member.username }}</div>
+          <div class="header bold">
+            {{ member.username }}
+            {% if member.id == user.id %} (me){% endif %}
+          </div>
         </a>
         <div class="header balance">
           {% if group.calculate_debts(member, convert_to_string=False) == 0 %}

@@ -5,6 +5,7 @@
     <h5>Email: {{ user.email }} <a href="#">Edit</a></h5>
     <h5>id: {{ user.id }}</h5><br><br>
 
+    <a class="btn btn-secondary" style="background-color: rgb(111,203,103);" href="join-group" role="button">Join Group</a>
     <a class="btn btn-secondary" href="/logout" role="button">Log Out</a>
     <a class="btn btn-danger" href="/delete-account?id={{ user.id }}" role="button"
      onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete Account</a>
