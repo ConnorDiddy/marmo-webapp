@@ -20,11 +20,11 @@
 <body>
   <div data-animation="default" data-collapse="tiny" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar w-nav">
     <div class="container centeralign">
-      <a href="#" class="navlogo w-inline-block"><img src="{{ url_for('static', filename='images/skinny_logo-removebg-preview.png') }}" loading="lazy" alt="The logo for marmo." class="nav-image"></a>
+      <a href="/" class="navlogo w-inline-block"><img src="{{ url_for('static', filename='images/skinny_logo-removebg-preview.png') }}" loading="lazy" alt="The logo for marmo." class="nav-image"></a>
       <div class="nav-section-container">
         <nav role="navigation" class="nav-menu w-nav-menu">
-          <a href="#" class="button nav w-button">Sign Up</a>
-          <a href="#" class="button nav inverse w-button">Log In</a>
+          <a href="sign-up" class="button nav w-button">Sign Up</a>
+          <a href="/login" class="button nav inverse w-button">Log In</a>
         </nav>
       </div>
       <div class="menu-button w-nav-button">
@@ -39,8 +39,8 @@
           <h1 class="hero-heading">Reimbursements,<br>reimagined.</h1>
           <div class="hero-heading subtext">We make expense sharing <strong>stress-free.</strong> Split costs between groups and track spending easier than ever before.<br><br>Best part? It&#x27;s FREE. No catch.</div>
           <div class="_2-col-row homehero">
-            <a href="#" class="button homehero w-button">Sign Up</a>
-            <a data-w-id="1c5a1d02-8198-321b-ad95-dc3e7b03cd0e" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" href="#" class="button homehero ghost w-button">Try It Out</a>
+            <a href="/sign-up" class="button homehero w-button">Sign Up</a>
+            <a data-w-id="1c5a1d02-8198-321b-ad95-dc3e7b03cd0e" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" href="/test" class="button homehero ghost w-button">Try It Out</a>
           </div>
         </div><img src="{{ url_for('static', filename='images/PhoneMockup.png') }}" loading="lazy" sizes="300px" width="540" 
         srcset="{{ url_for('static', filename='images/PhoneMockup-p-500.png') }} 500w, {{ url_for('static', filename='images/PhoneMockup-p-800.png') }} 800w, {{ url_for('static', filename='images/PhoneMockup-p-1080.png') }} 1080w, {{ url_for('static', filename='images/PhoneMockup.png') }} 1080w"
